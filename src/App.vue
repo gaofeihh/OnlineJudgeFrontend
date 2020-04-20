@@ -4,7 +4,7 @@
       <div class="navbar">
         <a class="logo">sdtbu OJ</a>
         <label for="toggle-nav">
-          <i class="el-icon-s-fold"/>
+          <p>选项</p>
         </label>
         <input type="checkbox" id="toggle-nav"/>
         <div class="collapse">

@@ -30,15 +30,6 @@ axios.interceptors.response.use(async response => {
   }
 })
 
-// 跟随页面修改标题
-router.beforeEach((to, from, next) => {
-
-  if (to.meta.title) {
-      document.title = to.meta.title
-  }
-  next()
-})
-
 Vue.prototype.$http = axios
 new Vue({
   router,

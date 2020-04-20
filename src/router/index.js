@@ -23,13 +23,18 @@ const routes = [
         }
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: () => import('../views/Login.vue'),
-      meta: {
-          keepAlive: true,
-          title: '登录'
-      }
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/Login.vue'),
+        meta: {
+            keepAlive: true,
+            title: '登录'
+        },
+        beforeEnter: (to, from, next) => {
+          if(window.localStorage.getItem('nickname')) {
+              next(false)
+          }
+        }
     },
     {
         path: '/register',
@@ -38,12 +43,26 @@ const routes = [
         meta: {
             keepAlive: true,
             title: '注册'
+        },
+        beforeEnter: (to, from, next) => {
+            if(window.localStorage.getItem('nickname')) {
+                next(false)
+            }
         }
     }
 ]
 
 const router = new VueRouter({
     routes
+})
+
+// 跟随页面修改标题
+router.beforeEach((to, from, next) => {
+
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+    next()
 })
 
 export default router
