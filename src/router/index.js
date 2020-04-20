@@ -34,6 +34,7 @@ const routes = [
           if(window.localStorage.getItem('nickname')) {
               next(false)
           }
+          next()
         }
     },
     {
@@ -48,6 +49,7 @@ const routes = [
             if(window.localStorage.getItem('nickname')) {
                 next(false)
             }
+            next()
         }
     }
 ]

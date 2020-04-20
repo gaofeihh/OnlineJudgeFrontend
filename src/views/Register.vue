@@ -20,6 +20,11 @@
                               :counter="20"
                               label="请输入密码"/>
 
+                <v-text-field type="password"
+                              :rules="registerFormRules.rePassword"
+                              :counter="20"
+                              label="请再次输入密码"/>
+
                 <v-text-field type="text"
                               v-model="registerForm.school"
                               :rules="registerFormRules.school"
@@ -72,6 +77,12 @@
                         value => !!value || '不能为空！',
                         value => (value || '').length <= 20 || '不能高于20位',
                         value => (value || '').length >= 7 || '不能低于7位'
+                    ],
+                    rePassword: [
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 20 || '不能高于20位',
+                        value => (value || '').length >= 7 || '不能低于7位',
+                        value => (!!value && value) === this.registerForm.password || '两次输入不相同'
                     ],
                     school: [
                         value => !!value || '不能为空！',
