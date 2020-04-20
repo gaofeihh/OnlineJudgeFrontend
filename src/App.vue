@@ -30,9 +30,13 @@
     </div>
     <!--路由占位符-->
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"/>
+      <v-app>
+        <router-view v-if="$route.meta.keepAlive"/>
+      </v-app>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"/>
+    <v-app>
+      <router-view v-if="!$route.meta.keepAlive"/>
+    </v-app>
   </div>
 </template>
 
@@ -87,7 +91,7 @@
       ...mapGetters(['getNickname'])
     },
     methods: {
-      
+
     },
   }
 </script>

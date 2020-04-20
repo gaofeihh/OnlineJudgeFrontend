@@ -1,74 +1,40 @@
 <template>
     <div id="register">
-        <!--        <div class="register-steps">-->
-        <!--            <el-steps :active="active" align-center="true" finish-status="success">-->
-        <!--                <el-step title="步骤 1"/>-->
-        <!--                <el-step title="步骤 2"/>-->
-        <!--                <el-step title="步骤 3"/>-->
-        <!--                <el-step title="步骤 4"/>-->
-        <!--                <el-step title="步骤 5"/>-->
-        <!--            </el-steps>-->
-        <!--        </div>-->
         <div class="register-form">
-            <el-form ref="registerFormRef" :model="registerForm" :rules="registerFormRules">
-                <el-form-item prop="email">
-                    <label>邮箱：</label>
-                    <el-input
-                            v-model="registerForm.email"
-                            placeholder="请输入邮箱"
-                            prefix-icon="el-icon-message"
-                            maxlength="25"
-                            show-word-limit
-                    />
-                </el-form-item>
+            <v-form ref="registerFormRef" :model="registerForm" :rules="registerFormRules">
+                <v-text-field type="email"
+                              v-model="registerForm.email"
+                              :rules="registerFormRules.email"
+                              :counter="25"
+                              label="请输入邮箱"/>
 
-                <el-form-item prop="nickname">
-                    <label>姓名：</label>
-                    <el-input
-                            v-model="registerForm.nickname"
-                            placeholder="请输入姓名"
-                            prefix-icon="el-icon-user"
-                            maxlength="8"
-                            show-word-limit
-                    />
-                </el-form-item>
+                <v-text-field type="text"
+                              v-model="registerForm.nickname"
+                              :rules="registerFormRules.nickname"
+                              :counter="10"
+                              label="请输入姓名"/>
 
-                <el-form-item prop="password">
-                    <label>密码（未提供密码二次确认，点击密码框右侧确认密码）：</label>
-                    <el-input
-                            v-model="registerForm.password"
-                            show-password
-                            placeholder="请输入密码"
-                            prefix-icon="el-icon-lock"
-                            maxlength="20"
-                    />
-                </el-form-item>
+                <v-text-field type="password"
+                              v-model="registerForm.password"
+                              :rules="registerFormRules.password"
+                              :counter="20"
+                              label="请输入密码"/>
 
-                <el-form-item prop="school">
-                    <label>学校：</label>
-                    <el-input
-                            v-model="registerForm.school"
-                            placeholder="请输入学校"
-                            prefix-icon="el-icon-user"
-                            maxlength="20"
-                            show-word-limit
-                    />
-                </el-form-item>
+                <v-text-field type="text"
+                              v-model="registerForm.school"
+                              :rules="registerFormRules.school"
+                              :counter="20"
+                              label="请输入学校"/>
 
-                <el-form-item prop="username">
-                    <label>用户名（与邮箱一同作为登录方式）：</label>
-                    <el-input
-                            v-model="registerForm.username"
-                            placeholder="请输入用户名"
-                            prefix-icon="el-icon-user"
-                            maxlength="20"
-                            show-word-limit
-                    />
-                </el-form-item>
-            </el-form>
+                <v-text-field type="text"
+                              v-model="registerForm.username"
+                              :rules="registerFormRules.username"
+                              :counter="20"
+                              label="请输入用户名"/>
+            </v-form>
 
-            <el-button style="margin-top: 12px;" @click="reset">重置</el-button>
-            <el-button type="primary" style="margin-top: 12px;float: right" @click="register">注册</el-button>
+            <v-btn style="margin-top: 12px;" @click="reset">重置</v-btn>
+            <v-btn type="primary" color="primary" style="margin-top: 12px;float: right" @click="register">注册</v-btn>
         </div>
 
 
@@ -92,51 +58,57 @@
                 // 验证规则
                 registerFormRules: {
                     email: [
-                        {required: true, message: "请输入邮箱", trigger: "blur"},
-                        {min: 10, max: 25, message: "长度在 10 到 25 个字符", trigger: "blur"}
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 25 || '不能高于25位',
+                        value => (value || '').length >= 10 || '不能低于10位',
+                        value => /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(value) || '请输入邮箱'
                     ],
                     nickname: [
-                        {required: true, message: "请输入姓名", trigger: "blur"},
-                        {min: 2, max: 8, message: "长度在 2 到 8 个字符", trigger: "blur"}
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 10 || '不能高于10位',
+                        value => (value || '').length >= 2 || '不能低于2位'
                     ],
                     password: [
-                        {required: true, message: "请输入密码", trigger: "blur"},
-                        {min: 7, max: 20, message: "长度在 7 到 20 个字符", trigger: "blur"}
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 20 || '不能高于20位',
+                        value => (value || '').length >= 7 || '不能低于7位'
                     ],
                     school: [
-                        {required: true, message: "请输入学校", trigger: "blur"},
-                        {min: 5, max: 20, message: "长度在 5 到 20 个字符", trigger: "blur"}
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 20 || '不能高于20位',
+                        value => (value || '').length >= 5 || '不能低于5位'
                     ],
                     username: [
-                        {required: true, message: "请输入用户名", trigger: "blur"},
-                        {min: 10, max: 20, message: "长度在 10 到 20 个字符", trigger: "blur"}
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 20 || '不能高于20位',
+                        value => (value || '').length >= 6 || '不能低于6位'
                     ]
                 }
             };
         },
         methods: {
-            // next() {
-            //     if (this.active++ > 4)
-            //         this.register()
-            // },
             reset() {   // 重置
-                this.$refs.registerFormRef.resetFields()
+                this.$refs.registerFormRef.reset()
             },
             register() {    // 注册方法
-                this.$refs.registerFormRef.validate(async valid => {
-                    if (!valid) {
-                        return;
+                const result = this.$refs.registerFormRef.validate()
+                if(result) {
+                    const submit = async() => {
+                        // console.log(this.registerForm)
+                        // 发送请求
+                        const {data:res} = await this.$http.put('/user', this.registerForm)
+                        // 已经设置响应拦截，错误不会生效
+                        if (res !== 'success') {
+                            // return this.$message.error("注册失败")
+                            return console.log('error')
+                        }
+
+                        this.$message.success("注册成功")
+                        // console.log('success')
+                        await this.$router.push('/login')
                     }
-                    // console.log(this.registerForm)
-                    // 发送请求
-                    const {data:res} = await this.$http.put('/user', this.registerForm)
-                    // console.log(res)
-                    if (res !== 'success') {
-                        return this.$message.error("注册失败")
-                    }
-                    this.$message.success("注册成功")
-                    await this.$router.push('/login')
-                })
+                    submit()
+                }
             }
         }
     }
