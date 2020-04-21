@@ -9,12 +9,6 @@
         <input type="checkbox" id="toggle-nav"/>
         <div class="collapse">
           <div class="links">
-            <!-- <router-link to="/">首页</router-link>
-            <router-link to="/onlineJudge">题库</router-link>
-            <router-link to="/history">历史成绩</router-link>
-            <router-link to="/download">常用下载</router-link>
-            <router-link to="/archives">档案馆</router-link>
-            <router-link to="/about">ABOUT</router-link> -->
             <!-- :class="{active:this.$route.name===isSelect}" -->
             <router-link v-for="link in linkLists" :to="link.links" :key="link.id" >{{link.show}}</router-link>
           </div>
@@ -31,12 +25,9 @@
     <!--路由占位符-->
     <keep-alive>
       <v-app>
-        <router-view v-if="$route.meta.keepAlive"/>
+        <router-view/>
       </v-app>
     </keep-alive>
-    <v-app>
-      <router-view v-if="!$route.meta.keepAlive"/>
-    </v-app>
   </div>
 </template>
 
@@ -104,6 +95,7 @@
 
   body {
     margin: 0 auto;
+    height: auto;
   }
   .active {
     color: #409eff;

@@ -9,7 +9,6 @@ const routes = [
         name: 'Home',
         component: () => import('../views/Home.vue'),
         meta: {
-            keepAlive: true,
             title: '首页'
         }
     },
@@ -18,7 +17,6 @@ const routes = [
         name: 'About',
         component: () => import('../views/About.vue'),
         meta: {
-            keepAlive: true,
             title: 'About'
         }
     },
@@ -26,31 +24,29 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: () => import('../views/Login.vue'),
-        meta: {
-            keepAlive: true,
-            title: '登录'
-        },
         beforeEnter: (to, from, next) => {
           if(window.localStorage.getItem('nickname')) {
-              next(false)
+              return next('/')
           }
           next()
-        }
+        },
+        meta: {
+            title: '登录',
+        },
     },
     {
         path: '/register',
         name: 'Register',
         component: () => import('../views/Register'),
-        meta: {
-            keepAlive: true,
-            title: '注册'
-        },
         beforeEnter: (to, from, next) => {
             if(window.localStorage.getItem('nickname')) {
-                next(false)
+                return next('/')
             }
             next()
-        }
+        },
+        meta: {
+            title: '注册'
+        },
     }
 ]
 
