@@ -25,7 +25,7 @@ const routes = [
         name: 'Login',
         component: () => import('../views/Login.vue'),
         beforeEnter: (to, from, next) => {
-          if(window.localStorage.getItem('nickname')) {
+          if(window.localStorage.getItem('username')) {
               return next('/')
           }
           next()
@@ -39,7 +39,7 @@ const routes = [
         name: 'Register',
         component: () => import('../views/Register'),
         beforeEnter: (to, from, next) => {
-            if(window.localStorage.getItem('nickname')) {
+            if(window.localStorage.getItem('username')) {
                 return next('/')
             }
             next()
@@ -47,6 +47,21 @@ const routes = [
         meta: {
             title: '注册'
         },
+    },
+    {
+        path: '/user',
+        name: 'User',
+        component: () => import('../views/User'),
+        beforeEnter: (to, from, next) => {
+            if(!window.localStorage.getItem('username')) {
+                return next('/')
+            }
+            next()
+        },
+        meta: {
+            title: '用户信息'
+        },
+
     }
 ]
 

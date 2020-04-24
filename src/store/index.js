@@ -5,11 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    nickname: ''
+    username: '',
+    userId: window.localStorage.getItem('userId')
   },
   mutations: {
     changeName(state) {
-      state.nickname = window.localStorage.getItem('nickname')
+      state.username = window.localStorage.getItem('username')
     }
   },
   actions: {
@@ -18,8 +19,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    getNickname(state) {
-      return state.nickname
+    getUsername(state) {
+      return state.username
+    },
+    getUserId(state) {
+      return state.userId
     }
   },
   modules: {

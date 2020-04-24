@@ -12,12 +12,14 @@
                           :rules="loginFormRules.identify"
                           label="请输入用户名/邮箱"
                           :counter="25"
+                          clearable
                           required/>
             <!-- 密码 -->
             <v-text-field type="password"
                           v-model="loginForm.password"
                           :rules="loginFormRules.password"
                           :counter="20"
+                          clearable
                           label="请输入密码"/>
             <v-switch
                     id="switch"
@@ -65,9 +67,10 @@
                 // 提交
                  const submit = async() => {
                     if(result) {
-                        const { data: res } = await this.$http.post("/auth/login", this.loginForm) // 添加接口地址
+                        const res = await this.$http.post("/auth/login", this.loginForm) // 添加接口地址
                         // 已经设置响应拦截，错误不会生效
-                        if (res !== 'success') {
+                        // console.log(res)
+                        if (res.status !== 200) {
                             // return that.$message.error("登陆失败")
                             // return Message.error('登陆失败，请检查账号密码')
                             return console.log(res.errors)
@@ -75,8 +78,9 @@
                         this.$message.success(`登陆成功`)
                         // 1 将登陆之后的token保存到客户端的sessionStorage中
                         // token,保留登录状态
-                        // window.localStorage.setItem("token", res.token)
-                        window.localStorage.setItem("nickname", res.nickname)
+                        window.localStorage.setItem("userId", res.data.id)
+                        window.localStorage.setItem("token", res.data.token)
+                        window.localStorage.setItem("username", res.data.username)
                         await this.$store.dispatch('asyncChangeName')
                         // 2 通过编程式导航跳转到主页 /
                         await this.$router.push('/');
@@ -135,5 +139,10 @@
         display: flex;
         margin-bottom: 25px;
         justify-content: flex-end;
+    }
+    @media (max-width: 780px) {
+        .login-box {
+            width: 70%;
+        }
     }
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
     <div class="nav">
       <div class="navbar">
-        <a class="logo">sdtbu OJ</a>
+        <a class="logo">SDTBU OJ</a>
         <label for="toggle-nav">
           <p>选项</p>
         </label>
@@ -12,12 +12,12 @@
             <!-- :class="{active:this.$route.name===isSelect}" -->
             <router-link v-for="link in linkLists" :to="link.links" :key="link.id" >{{link.show}}</router-link>
           </div>
-          <div v-if="!getNickname" class="form">
+          <div v-if="!getUsername" class="form">
             <router-link class="form-bg" to="/login">登录</router-link>
             <router-link class="form-bg2" to="/register">注册</router-link>
           </div>
           <div v-else class="user">
-            <router-link to="/user">{{getNickname}}</router-link>
+            <router-link to="/user">{{getUsername}}</router-link>
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
       this.$store.dispatch('asyncChangeName')
     },
     computed: {
-      ...mapGetters(['getNickname'])
+      ...mapGetters(['getUsername'])
     },
     methods: {
 
@@ -197,7 +197,7 @@
       }
     }
 
-    @media screen and (max-width: 780px) {
+    @media (max-width: 780px) {
       .nav {
         .navbar {
           flex-flow: row wrap;
