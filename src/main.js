@@ -15,25 +15,38 @@ axios.defaults.baseURL = '/api'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 
-// http response 响应拦截器 登录过期重定向
-axios.interceptors.response.use(async response => {
-  if (response.data.code === 401) {
-        await Message.error('身份过期，请重新登录')
-        await this.$router.push('/login')
+// http response 响应拦截器
+axios.interceptors.response.use(response => {
+  if(response.status === 200) {
+    return Promise.resolve(response)
   }
-  return response
+  else {
+    return Promise.reject(response)
+  }
 }, error => {
-  if (error.response) {
-    // 返回接口返回的错误信息
-    return Message.error(error.response.data.errors)
+    if (error.response.status) {
+      switch (error.response.status) {
+        case 403: this.$router.push('/login')
+            .then(r => {
+              console.log(r)
+              Message.error('身份过期请登录')
+            })
+          break;
+        case 500: Message.error('服务器内部错误')
+              break;
+        case 404: Message.error('404') // 修改到指定页面
+              break;
 
-  }
+      }
+    }
 })
+
+
 
 Vue.prototype.$http = axios
 new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')

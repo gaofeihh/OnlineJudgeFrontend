@@ -2,19 +2,18 @@
     <div id="user">
         <v-card class="user-info-card">
             <div class="info-form">
-                <v-form ref="updateRef" :model="infoForm" :rules="rules">
+                <v-form ref="updateRef" :model="infoForm" :rules="updateFormRules">
                     <v-text-field type="text" disabled v-model="id" label="ID"/>
                     <v-text-field type="text" disabled v-model="createAt" label="注册时间"/>
                     <v-text-field type="text" v-model="infoForm.email" :disabled="isEdit" label="邮箱"
-                                  :rules="rules.email"/>
+                                  :rules="updateFormRules.email"/>
                     <v-text-field type="text" v-model="infoForm.nickname" :disabled="isEdit" label="昵称"
-                                  :rules="rules.nickname"/>
+                                  :rules="updateFormRules.nickname"/>
 <!--                    <v-text-field type="password" v-model="infoForm.password" :disabled="isEdit" label="密码"-->
 <!--                                  :rules="rules.password"/>-->
                     <v-text-field type="text" v-model="infoForm.school" :disabled="isEdit" label="学校"
-                                  :rules="rules.school"/>
-                    <v-text-field type="text" v-model="infoForm.username" :disabled="isEdit" label="用户名"
-                                  :rules="rules.username"/>
+                                  :rules="updateFormRules.school"/>
+                    <v-text-field type="text" v-model="infoForm.username" disabled label="用户名"/>
                 </v-form>
             </div>
             <div class="photo-box">
@@ -33,6 +32,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
+    import {rules} from '../assets/rules'
 
     export default {
         name: "User",
@@ -53,31 +53,7 @@
                 },
                 postForm: {},
                 getJSON: {},
-                rules: {
-                    email: [
-                        value => !!value || '不能为空！',
-                        value => /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(value) || '请输入邮箱'
-                    ],
-                    nickname: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 2 || '不能低于2位'
-                    ],
-                    password: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 7 || '不能低于7位'
-                    ],
-                    school: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 5 || '不能低于5位'
-                    ],
-                    username: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                    ]
-                }
+                updateFormRules: rules.updateFormRules
             }
         },
         methods: {
@@ -103,21 +79,15 @@
                 if(this.infoForm.nickname !== this.getJSON.nickname) {
                     this.postForm['nickname'] = this.infoForm.nickname
                 }
-                // if(this.infoForm.password !== this.getJSON.password) {
-                //     this.postForm['password'] = this.infoForm.password
-                // }
                 if(this.infoForm.school !== this.getJSON.school) {
                     this.postForm['school'] = this.infoForm.school
-                }
-                if(this.infoForm.username !== this.getJSON.username) {
-                    this.postForm['username'] = this.infoForm.username
                 }
             },
             getInfo() {
                 const get = async () => {
                     const url = '/user/' + this.getUserId
                     const res = await this.$http.get(url)
-                    // console.log(res)
+                    // console.log(url)
                     if (res.status !== 200) {
                         return console.log("出现错误")
                     }
@@ -142,7 +112,14 @@
                     const submit = async() => {
                         const url = '/user/' + this.getUserId
                         const res = await this.$http.post(url, this.postForm)
-                        console.log(res)
+                        if(res.status !== 200) {
+                            console.log(res.errors)
+                        }
+                        this.changeEdit()
+                        this.infoForm.email = res.data.email
+                        this.infoForm.nickname = res.data.nickname
+                        this.infoForm.school = res.data.school
+                        this.$message.success("修改成功")
                     }
                     submit()
                 }
@@ -225,17 +202,19 @@
                     margin: 0 auto;
                 }
                 .photo-box {
-                    padding-top: 20px;
+                    padding-top: 10px;
+                    width: fit-content;
+                    margin: 0 auto;
                     .user-photo {
                         display: none;
                     }
 
                     .btns {
-
-                        display: flex;
+                        width: fit-content;
+                        margin: 0 auto;
                         .btn {
                             width: 80px;
-                            margin-left: 5px;
+                            margin-left: 10px;
                         }
                     }
                 }

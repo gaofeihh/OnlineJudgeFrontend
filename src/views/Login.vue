@@ -35,6 +35,7 @@
 </template>
 
 <script>
+    import {rules} from '../assets/rules'
     export default {
         data() {
             // 数据绑定
@@ -44,20 +45,9 @@
                     password: "",
                     remember: true    // 是否记住密码
                 },
-
                 // 验证规则
-                loginFormRules: {
-                    identify: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 25 || '不能高于25位',
-                        value => (value || '').length >= 5 || '不能低于5位'
-                    ],
-                    password: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 6 || '不能低于6位'
-                    ]
-                }
+                loginFormRules: rules.loginFormRules
+
             };
         },
         methods: {
@@ -82,6 +72,7 @@
                         window.localStorage.setItem("token", res.data.token)
                         window.localStorage.setItem("username", res.data.username)
                         await this.$store.dispatch('asyncChangeName')
+                        await this.$store.dispatch('asyncChangeId')
                         // 2 通过编程式导航跳转到主页 /
                         await this.$router.push('/');
                     }

@@ -11,11 +11,17 @@ export default new Vuex.Store({
   mutations: {
     changeName(state) {
       state.username = window.localStorage.getItem('username')
+    },
+    changeId(state) {
+      state.userId = window.localStorage.getItem('userId')
     }
   },
   actions: {
     asyncChangeName(context) {
       context.commit('changeName')
+    },
+    asyncChangeId(context) {
+      context.commit('changeId')
     }
   },
   getters: {

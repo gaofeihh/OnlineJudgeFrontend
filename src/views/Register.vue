@@ -46,6 +46,7 @@
 </template>
 
 <script>
+    import {rules} from '../assets/rules'
     export default {
         name: "Register",
         data() {
@@ -61,35 +62,17 @@
                 },
                 // 验证规则
                 registerFormRules: {
-                    email: [
-                        value => !!value || '不能为空！',
-                        value => /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/.test(value) || '请输入邮箱'
-                    ],
-                    nickname: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 2 || '不能低于2位'
-                    ],
-                    password: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 7 || '不能低于7位'
-                    ],
+                    email: rules.registerFormRules.email,
+                    nickname: rules.registerFormRules.nickname,
+                    password: rules.registerFormRules.password,
                     rePassword: [
                         value => !!value || '不能为空！',
                         value => (value || '').length <= 20 || '不能高于20位',
                         value => (value || '').length >= 7 || '不能低于7位',
                         value => (!!value && value) === this.registerForm.password || '两次输入不相同'
                     ],
-                    school: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                        value => (value || '').length >= 5 || '不能低于5位'
-                    ],
-                    username: [
-                        value => !!value || '不能为空！',
-                        value => (value || '').length <= 20 || '不能高于20位',
-                    ]
+                    school: rules.registerFormRules.school,
+                    username: rules.registerFormRules.username
                 }
             };
         },
@@ -103,9 +86,9 @@
                     const submit = async() => {
                         // console.log(this.registerForm)
                         // 发送请求
-                        const {data:res} = await this.$http.put('/user', this.registerForm)
+                        const res = await this.$http.put('/user', this.registerForm)
                         // 已经设置响应拦截，错误不会生效
-                        if (res !== 'success') {
+                        if (res.status !== 200) {
                             // return this.$message.error("注册失败")
                             return console.log('error')
                         }
