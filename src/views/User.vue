@@ -33,6 +33,7 @@
 <script>
     import {mapGetters} from 'vuex'
     import {rules} from '../assets/rules'
+    import {formatDate} from "@/assets/formatDate";
 
     export default {
         name: "User",
@@ -57,11 +58,6 @@
             }
         },
         methods: {
-            formatDate(date) {
-                let d = new Date(date)
-                return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " +
-                    d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
-            },
             changeEdit() {
                 this.isEdit = !this.isEdit
                 if (this.isEdit) {
@@ -92,8 +88,8 @@
                         return console.log("出现错误")
                     }
                     this.id = res.data.id
-                    this.createAt = this.formatDate(res.data.createAt)
-                    this.updateAt = this.formatDate(res.data.updateAt)
+                    this.createAt = formatDate(res.data.createAt)
+                    this.updateAt = formatDate(res.data.updateAt)
                     this.infoForm.email = res.data.email
                     this.infoForm.nickname = res.data.nickname
                     // this.infoForm.password = res.data.password

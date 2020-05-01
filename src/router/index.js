@@ -13,6 +13,23 @@ const routes = [
         }
     },
     {
+        path: '/onlineJudge',
+        name: 'OnlineJudge',
+        component: () => import('../views/OnlineJudge'),
+        meta: {
+            title: '题库'
+        }
+    },
+    {
+        path: '/problem/:id',
+        name: 'Problem',
+        component: () => import('../views/ProblemDetail'),
+        props: true,
+        meta: {
+            title: '题目详情'
+        }
+    },
+    {
         path: '/about',
         name: 'About',
         component: () => import('../views/About.vue'),
