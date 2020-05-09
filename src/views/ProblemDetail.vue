@@ -53,8 +53,8 @@
             getProblemInfo() {
                 this.$http.get(`/problem/${this.id}`)
                     .then(value => {
-                        // console.log(value.data)
                         this.problem = value.data
+                        window.document.title = this.problem.title
                     })
             }
         },
@@ -65,7 +65,6 @@
         },
         created() {
             // 修改标题
-            // window.document.title = this.problem.title
             this.getProblemInfo()
         }
     }

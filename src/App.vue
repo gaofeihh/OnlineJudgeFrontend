@@ -97,9 +97,26 @@
     margin: 0 auto;
     height: auto;
   }
+  ::-webkit-scrollbar{
+    width:10px;
+    height:10px;
+    /**/
+  }
+  ::-webkit-scrollbar-track{
+    background: rgb(239, 239, 239);
+    border-radius:2px;
+  }
+  ::-webkit-scrollbar-thumb{
+    background: #bfbfbf;
+    border-radius:10px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background: #409eff;
+  }
   .active {
     color: #409eff;
   }
+
 
   #app {
     font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
@@ -113,7 +130,7 @@
     .nav {
       position: fixed;
       top: 0;
-      z-index: 999;
+      z-index: 100;
       padding: 15px 0;
       width: 100%;
       background-color: #fff;

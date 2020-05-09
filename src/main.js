@@ -26,16 +26,14 @@ axios.interceptors.response.use(response => {
     if (error.response.status) {
         switch (error.response.status) {
             case 401:
-                this.$router.push('/login')
-                    .then(r => {
-                        console.log(r)
-                        Message.error('身份过期请登录')
-                    })
+                router.push('/login')
+                Message.error('身份过期请登录')
                 break;
             case 403:
                 Message.error(`拒绝访问403,${error.response.data.errors}`)
                 break;
             case 404:
+                router.go(-1)
                 Message.error('请求错误404')
                 break;
             case 408:
@@ -54,6 +52,7 @@ axios.interceptors.response.use(response => {
                 Message.error('网络超时504')
                 break;
             default:
+                router.go(-1)
                 Message.error(`错误${error.response.data.errors}`)
         }
     } else {

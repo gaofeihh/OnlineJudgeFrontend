@@ -25,9 +25,9 @@ const routes = [
         name: 'Problem',
         component: () => import('../views/ProblemDetail'),
         props: true,
-        meta: {
-            title: '题目详情'
-        }
+        // meta: {
+        //     title: '题目详情'
+        // }
     },
     {
         path: '/about',
@@ -76,9 +76,31 @@ const routes = [
             next()
         },
         meta: {
-            title: '用户信息'
+            title: '个人信息'
         },
 
+    },
+    {
+        path: '/userCenter',
+        name: 'UserCenter',
+        component: () => import('../views/UserCenter'),
+        beforeEnter: (to, from, next) => {
+            if(!window.localStorage.getItem('username')) {
+                return next('/')
+            }
+            next()
+        },
+        meta: {
+            title: '个人中心'
+        }
+    },
+    // 捕获非法路径
+    {
+        path: '*',
+        component: () => import('../views/Notfound'),
+        meta: {
+            title: '404'
+        }
     }
 ]
 
