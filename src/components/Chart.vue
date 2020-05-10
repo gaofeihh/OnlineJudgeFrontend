@@ -6,6 +6,7 @@
 
 <script>
     import Schart from 'vue-schart'
+    import {statusDic} from '@/assets/dictionary'
 
     export default {
         name: "Chart",
@@ -22,24 +23,35 @@
                     title: {
                         text: "解题状态"
                     },
+                    legend: {
+                        position: 'left'
+                    },
                     bgColor: "#fbfbfb",
-                    labels: ["周一", "周二", "周三", "周四", "周五"],
+                    labels: ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"],
                     datasets: [
                         {
-                            // data: [234, 278, 270, 190, 230]
+                            data: []
                         }
                     ]
                 }
             }
         },
-        // mounted() {
-        //     this.options.labels = Object.keys(this.status)
-        //     this.options.datasets[0].data = Object.values(this.status)
-        // },
+        mounted() {
+            this.options.labels = Object.keys(this.status)
+            // this.options.labels = ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"]
+            this.options.datasets[0].data = Object.values(this.status)
+            for(let i = 0; i< this.options.labels.length; i++) {
+                this.options.labels[i] = statusDic[this.options.labels[i]]
+            }
+        },
         watch: {
             status() {
                 this.options.labels = Object.keys(this.status)
+                // this.options.labels = ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"]
                 this.options.datasets[0].data = Object.values(this.status)
+                for(let i = 0; i< this.options.labels.length; i++) {
+                    this.options.labels[i] = statusDic[this.options.labels[i]]
+                }
             }
         }
     }
@@ -47,7 +59,7 @@
 
 <style lang="less" scoped>
     .wrapper {
-        width: 80%;
+        width: 60%;
         height: 400px;
         margin: 0 auto;
     }

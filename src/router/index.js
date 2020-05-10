@@ -16,6 +16,7 @@ const routes = [
         path: '/onlineJudge',
         name: 'OnlineJudge',
         component: () => import('../views/OnlineJudge'),
+        props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
             title: '题库'
         }
@@ -79,20 +80,6 @@ const routes = [
             title: '个人信息'
         },
 
-    },
-    {
-        path: '/userCenter',
-        name: 'UserCenter',
-        component: () => import('../views/UserCenter'),
-        beforeEnter: (to, from, next) => {
-            if(!window.localStorage.getItem('username')) {
-                return next('/')
-            }
-            next()
-        },
-        meta: {
-            title: '个人中心'
-        }
     },
     // 捕获非法路径
     {

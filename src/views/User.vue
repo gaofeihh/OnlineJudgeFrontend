@@ -29,6 +29,25 @@
 
         <v-divider class="br"/>
 
+        <div class="user-center">
+            <Chart :status="resultMap" />
+            <div class="result-list">
+                <div class="accepted-list">
+                    <h2>accepted</h2>
+                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.accepted" :key="item">{{item}} &nbsp;</router-link>
+                </div>
+
+                <!--            <v-divider vertical="true"/>-->
+
+                <div class="unsolved-list">
+                    <h2>unsolved</h2>
+                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.unsolved" :key="item">{{item}} &nbsp;</router-link>
+                </div>
+            </div>
+        </div>
+
+        <v-divider class="br"/>
+
         <div class="log" v-if="logList.length !== 0">
             <div class="log-text"><h2>最近登录</h2></div>
             <div class="log-component">
@@ -39,10 +58,6 @@
             <div v-else class="log-btn">没有更多了...</div>
         </div>
 
-
-        <router-link to="/userCenter">
-            <div class="user-center">个人<br/>中心</div>
-        </router-link>
 
         <router-link to="">
             <div class="re-password">修改<br/>密码</div>
@@ -56,11 +71,13 @@
     import {rules} from '../assets/rules'
     import {formatDate} from "@/assets/formatDate"
     import LoginLog from "@/components/LoginLog"
+    import Chart from "@/components/Chart"
 
     export default {
         name: "User",
         components: {
-            'login-log': LoginLog
+            'login-log': LoginLog,
+            Chart
         },
         data() {
             return {
@@ -82,7 +99,9 @@
                 updateFormRules: rules.updateFormRules,
                 logList: [],
                 logPage: 0,
-                hasLog: true
+                hasLog: true,
+                userCenterInfo: [],
+                resultMap: {}
             }
         },
         methods: {
@@ -167,7 +186,19 @@
             getLog() {
                 this.logPage++
                 this.loginLog()
-            }
+            },
+            getCenterInfo() {
+                this.$http.get(`/user/center?userId=${this.getUserId}`)
+                    .then(res => {
+                        this.userCenterInfo = res.data
+                        this.resultMap = res.data.resultMap
+                        // this.resultMapKeys = Object.keys(res.data.resultMap)
+                        // this.resultMapValues = Object.values(res.data.resultMap)
+                    })
+            },
+            // format(date) {
+            //     return formatDate(date, 2)
+            // }
         },
         computed: {
             ...mapGetters(['getUserId'])
@@ -175,6 +206,7 @@
         created() {
             this.getInfo()
             this.loginLog()
+            this.getCenterInfo()
         }
     }
 </script>
@@ -234,12 +266,36 @@
             margin: 20px auto;
         }
 
+        .user-center {
+            .result-list {
+                width: 60%;
+                margin: 20px auto;
+                box-shadow: 4px 4px 10px #f2f4fc;
+                border-radius: 10px;
+                .accepted-list {
+                    padding:0 20px 20px 20px;
+                }
+
+                .unsolved-list {
+                    padding:0 20px 20px 20px;
+                }
+                h2 {
+                    color: #409eff;
+                }
+                a:hover {
+                    color: #ffa500;
+                    font-size: 17px;
+                }
+            }
+        }
+
         .log {
             margin-top: 20px;
             margin-left: auto;
             margin-right: auto;
             width: 60%;
-            height: 400px;
+            height: 420px;
+            padding: 0 10px 10px 10px;
             overflow: scroll;
             overflow-x: hidden;
 
@@ -260,19 +316,8 @@
 
             .log-btn:hover {
                 cursor: pointer;
+                color: #409eff;
             }
-        }
-
-        .user-center {
-            position: fixed;
-            background-color: #00f2fe;
-            box-shadow: 0 0 10px #22d4fe;
-            height: 50px;
-            width: 50px;
-            text-align: center;
-            border-radius: 20px;
-            right: 10px;
-            top: 150px;
         }
 
         .re-password {
@@ -283,7 +328,9 @@
             height: 50px;
             width: 50px;
             text-align: center;
-            border-radius: 20px;
+            border-radius: 50%;
+            padding: 10px;
+            font-size: 11px;
             right: 10px;
             top: 250px;
         }
@@ -319,6 +366,11 @@
                             margin-left: 10px;
                         }
                     }
+                }
+            }
+            .user-center {
+                .result-list {
+                    width: 90%;
                 }
             }
             .br {

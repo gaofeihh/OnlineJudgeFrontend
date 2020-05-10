@@ -48,7 +48,7 @@
           },
           {
             id: 2,
-            links: '/onlineJudge',
+            links: '/onlineJudge?page=1',
             show: '题库'
           },
           {
