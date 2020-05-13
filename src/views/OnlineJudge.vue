@@ -35,19 +35,20 @@
                     </td>
                     <td>0%</td>
                     <td>{{format(item.lastSubmit)}}</td>
-                    <td :class="[item.isAccepted ? 'true-class' : 'false-class']">
-                        {{item.isAccepted ? '✔' : '✘'}}
-                    </td>
+                    <td class="true-class">{{item.isAccepted ? '✔' : ''}}</td>
                 </tr>
                 </tbody>
             </table>
             <div class="pages">
-                <ul class="pagination">
-                    <li><a @click="subNumber">«</a></li>
-                    <li><a @click="addNumber">»</a></li>
-                </ul>
+                <div class="text-center">
+                    <v-pagination
+                            v-model="pageNumber"
+                            :length="totalPage"
+                            :total-visible="10"
+                    />
+                </div>
                 <div class="pageNumInput">
-                    第<input class="pageInput" v-model="pageLimit.pageNumber"/>/{{totalPage}}页
+                    第<input class="pageInput" v-model="pageNumber"/>/{{totalPage}}页
                     <v-btn small color="primary" @click="getList">go</v-btn>
                 </div>
             </div>
@@ -65,10 +66,8 @@
         },
         data() {
             return {
-                pageLimit: {
-                    pageNumber: 1,
-                    pageSize: 15
-                },
+                pageNumber: 1,
+                pageSize: 15,
                 problemList: [],
                 searchId: '',
                 totalPage: ''
@@ -79,7 +78,7 @@
                 return formatDate(date, 2)
             },
             getList() {
-                this.$http.get(`/problems?page=${this.pageLimit.pageNumber - 1}&size=${this.pageLimit.pageSize}`)
+                this.$http.get(`/problems?page=${this.pageNumber - 1}&size=${this.pageSize}`)
                     .then(value => {
                         this.problemList = value.data.content
                         this.totalPage = value.data.totalPages
@@ -88,20 +87,6 @@
             },
             searchById() {
                 this.$router.push(`/problem/${this.searchId}`)
-            },
-            addNumber() {
-                if (this.pageLimit.pageNumber < this.totalPage) {
-                    this.pageLimit.pageNumber++
-                    this.$router.push({path: "/onlineJudge", query: {page: this.pageLimit.pageNumber}})
-                    // this.getList()
-                }
-            },
-            subNumber() {
-                if (this.pageLimit.pageNumber > 1) {
-                    this.pageLimit.pageNumber--
-                    this.$router.push({path: "/onlineJudge", query: {page: this.pageLimit.pageNumber}})
-                    // this.getList()
-                }
             }
         },
         created() {
@@ -109,10 +94,18 @@
         },
         watch: {
             page() {
-                if(this.page < 1 || this.page > this.totalPage) {
-                    this.$router.push( "/onlineJudge?page=1")
+                if (this.page < 1 || this.page > this.totalPage) {
+                    this.$router.push("/onlineJudge?page=1")
                 } else {
-                    this.pageLimit.pageNumber = this.page
+                    this.pageNumber = this.page
+                    this.getList()
+                }
+            },
+            pageNumber() {
+                if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
+                    this.$router.push("/onlineJudge?page=1")
+                } else {
+                    this.$router.push({path: "/onlineJudge", query: {page: this.pageNumber}})
                     this.getList()
                 }
             }
@@ -229,28 +222,10 @@
 
             .pages {
                 margin-top: 20px;
+                overflow: hidden;
 
-                .pagination {
-                    display: inline-block;
-                    padding: 0;
-                    margin: 0;
-
-                    li {
-                        display: inline;
-                        padding: 5px 16px;
-
-                        a {
-                            color: black;
-                            float: left;
-                            padding: 5px 16px;
-                            text-decoration: none;
-                            border-radius: 5px;
-                        }
-
-                        a:hover:not(.active) {
-                            background-color: #ddd;
-                        }
-                    }
+                .text-center {
+                    float: left;
                 }
 
                 .pageNumInput {

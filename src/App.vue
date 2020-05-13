@@ -63,8 +63,8 @@
           },
           {
             id: 5,
-            links: '/archives',
-            show: '档案馆'
+            links: '/rankList?page=1',
+            show: '排名'
           },
           {
             id: 6,

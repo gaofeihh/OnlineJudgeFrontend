@@ -39,6 +39,15 @@ const routes = [
         }
     },
     {
+        path: '/rankList',
+        name: 'RankList',
+        component: () => import('../views/RankList'),
+        props: (route) => ({page: parseInt(route.query.page)}),
+        meta: {
+            title: '排名'
+        }
+    },
+    {
         path: '/login',
         name: 'Login',
         component: () => import('../views/Login.vue'),

@@ -1,70 +1,93 @@
 <template>
-    <div id="app">
-        <s-chart class="wrapper" canvasId="canvas" :options="options"/>
-    </div>
+    <!--为echarts准备一个具备大小的容器dom-->
+    <div id="main"></div>
 </template>
-
 <script>
-    import Schart from 'vue-schart'
+    import echarts from 'echarts'
     import {statusDic} from '@/assets/dictionary'
 
     export default {
-        name: "Chart",
-        components: {
-            's-chart': Schart
-        },
-        props :{
+        name: 'Chart',
+        props: {
             status: Object
         },
         data() {
             return {
-                options: {
-                    type: "pie",
+                data: []
+            }
+        },
+        methods: {
+            drawPie(id) {
+                const that = this
+                const myChart = echarts.init(document.getElementById(id))
+                this.charts = myChart.setOption({
                     title: {
-                        text: "解题状态"
+                        text: '解题状态',
+                        left: 'center'
                     },
-                    legend: {
-                        position: 'left'
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b} : {c} ({d}%)'
                     },
-                    bgColor: "#fbfbfb",
-                    labels: ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"],
-                    datasets: [
-                        {
-                            data: []
+                    series: {
+                        type: 'pie',
+                        name: '解题状态',
+                        radius: '80%',
+                        roseType: true,
+                        data: that.data,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
                         }
-                    ]
+                    },
+                })
+                myChart.on('click', (params) => {
+                    alert(params.dataIndex)
+                    // console.log(params.dataIndex)
+                    // that.$router.push('/') // 可携参跳转
+                })
+            },
+            update() {
+                const keys = Object.keys(this.status)
+                for(let i = 0; i< keys.length; i++) {
+                    keys[i] = statusDic[keys[i]]
+                }
+                const values = Object.values(this.status)
+                for (let i = 0; i < keys.length; i++) {
+                    this.data.push({name: keys[i], value: values[i]})
                 }
             }
         },
+        //调用
         mounted() {
-            this.options.labels = Object.keys(this.status)
-            // this.options.labels = ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"]
-            this.options.datasets[0].data = Object.values(this.status)
-            for(let i = 0; i< this.options.labels.length; i++) {
-                this.options.labels[i] = statusDic[this.options.labels[i]]
-            }
+            this.update()
+            this.$nextTick(function () {
+                this.drawPie('main')
+            })
+
         },
         watch: {
             status() {
-                this.options.labels = Object.keys(this.status)
-                // this.options.labels = ["AC", "WA", "TLE", "MLE", "OLE", "RE", "CE"]
-                this.options.datasets[0].data = Object.values(this.status)
-                for(let i = 0; i< this.options.labels.length; i++) {
-                    this.options.labels[i] = statusDic[this.options.labels[i]]
-                }
+                this.update()
+                this.$nextTick(function () {
+                    this.drawPie('main')
+                })
             }
         }
     }
 </script>
-
 <style lang="less" scoped>
-    .wrapper {
-        width: 60%;
+    #main {
+        width: 500px;
         height: 400px;
         margin: 0 auto;
     }
+
     @media screen and (max-width: 780px) {
-        .wrapper {
+        #main {
             width: 90%;
         }
     }

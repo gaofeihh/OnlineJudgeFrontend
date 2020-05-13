@@ -17,7 +17,7 @@
                 </v-form>
             </div>
             <div class="photo-box">
-                <v-img class="user-photo" src="../assets/user.jpg"/>
+<!--                <v-img class="user-photo" src="../assets/user.jpg"/>-->
 
                 <div class="btns">
                     <v-btn class="btn" :color="color" @click="changeEdit">{{Editor}}</v-btn>
