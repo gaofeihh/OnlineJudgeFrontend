@@ -45,8 +45,8 @@
                     },
                 })
                 myChart.on('click', (params) => {
-                    alert(params.dataIndex)
-                    // console.log(params.dataIndex)
+                    // alert(params.dataIndex)
+                    console.log(params.dataIndex)
                     // that.$router.push('/') // 可携参跳转
                 })
             },

@@ -101,7 +101,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    routes
+    routes,
+    mode: 'history',
 })
 
 // 跟随页面修改标题

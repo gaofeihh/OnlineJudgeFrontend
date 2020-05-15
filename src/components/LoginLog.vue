@@ -1,9 +1,12 @@
 <template>
     <div id="login-log">
         <div class="log-des">
-            ID:<span>{{logItem.userId}}</span>
-            在<span>{{logItem.ip}}</span>登录，
-            时间<span>{{format(parseInt(logItem.createAt))}}</span>
+            <div>
+                登陆地：<span>{{logItem.ip}}</span>
+            </div>
+            <div>
+                时间：<span>{{format(parseInt(logItem.createAt))}}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -34,8 +37,18 @@
         box-shadow: 5px 5px 10px #f2f4fc;
         .log-des {
             text-align: center;
-            span {
+            div {
+                display: inline-block;
+            }
+            span:nth-of-type(1) {
                 color: #9d9d9d;
+                display: inline-block;
+                width: 12em;
+            }
+            span:nth-of-type(2) {
+                color: #9d9d9d;
+                display: inline-block;
+                width: 12em;
             }
         }
     }
