@@ -16,7 +16,7 @@
                     <v-text-field type="text" v-model="infoForm.username" disabled label="用户名"/>
                 </v-form>
             </div>
-            <div class="photo-box">
+            <div class="photo-box" v-if="isOwner">
 <!--                <v-img class="user-photo" src="../assets/user.jpg"/>-->
 
                 <div class="btns">
@@ -48,7 +48,7 @@
 
         <v-divider class="br"/>
 
-        <div class="log" v-if="logList.length !== 0">
+        <div class="log" v-if="logList.length !== 0 && isOwner">
             <div class="log-text"><h2>最近登录</h2></div>
             <div class="log-component">
                 <login-log v-for="item in logList" :key="item.id" :log-item="item"/>
@@ -60,7 +60,7 @@
 
 
         <router-link to="">
-            <div class="re-password">修改<br/>密码</div>
+            <div class="re-password" title="修改密码">修改<br/>密码</div>
         </router-link>
 
     </div>
@@ -78,6 +78,9 @@
         components: {
             'login-log': LoginLog,
             Chart
+        },
+        props: {
+            getUsername: String
         },
         data() {
             return {
@@ -100,8 +103,12 @@
                 logList: [],
                 logPage: 0,
                 hasLog: true,
-                userCenterInfo: [],
-                resultMap: {}
+                userCenterInfo: {
+                    accepted: [],
+                    unsolved: []
+                },
+                resultMap: {},
+                isOwner: false
             }
         },
         methods: {
@@ -128,8 +135,7 @@
             },
             getInfo() {
                 const get = async () => {
-                    const url = '/user/' + this.getUserId
-                    const res = await this.$http.get(url)
+                    const res = await this.$http.get(`/user/${this.getUsername}`)
                     // console.log(res)
                     if (res.status !== 200) {
                         return console.log("出现错误")
@@ -188,10 +194,13 @@
                 this.loginLog()
             },
             getCenterInfo() {
-                this.$http.get(`/user/center?userId=${this.getUserId}`)
+                this.$http.get(`/user/center?username=${this.getUsername}`)
                     .then(res => {
-                        this.userCenterInfo = res.data
+                        this.userCenterInfo.accepted = res.data.accepted
+                        this.userCenterInfo.unsolved = res.data.unsolved
+                        this.infoForm = res.data.userInfo
                         this.resultMap = res.data.resultMap
+                        this.isOwner = res.data.isOwner
                         // this.resultMapKeys = Object.keys(res.data.resultMap)
                         // this.resultMapValues = Object.values(res.data.resultMap)
                     })
@@ -204,9 +213,18 @@
             ...mapGetters(['getUserId'])
         },
         created() {
-            this.getInfo()
-            this.loginLog()
+            // this.getInfo()
             this.getCenterInfo()
+            this.loginLog()
+        },
+        watch: {
+            getUsername() {
+                // this.getInfo()
+                this.logList.length = 0
+                this.getCenterInfo()
+                this.loginLog()
+
+            }
         }
     }
 </script>
@@ -324,7 +342,7 @@
             position: fixed;
             background-color: #fd928b;
             color: #d13b57;
-            box-shadow: 0 0 10px #fd898c;
+            box-shadow: 0 0 10px #c5c5c5;
             height: 50px;
             width: 50px;
             text-align: center;

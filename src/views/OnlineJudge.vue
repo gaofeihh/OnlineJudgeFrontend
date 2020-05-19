@@ -70,7 +70,7 @@
                 pageSize: 15,
                 problemList: [],
                 searchId: '',
-                totalPage: ''
+                totalPage: 0
             }
         },
         methods: {
@@ -82,7 +82,7 @@
                     .then(value => {
                         this.problemList = value.data.content
                         this.totalPage = value.data.totalPages
-                        // console.log(this.page)
+                        // console.log(1)
                     })
             },
             searchById() {
@@ -90,12 +90,14 @@
             }
         },
         created() {
+            this.pageNumber = this.page
             this.getList()
         },
         watch: {
             page() {
                 if (this.page < 1 || this.page > this.totalPage) {
-                    this.$router.push("/onlineJudge?page=1")
+                    this.pageNumber = 1
+                    this.getList()
                 } else {
                     this.pageNumber = this.page
                     this.getList()
@@ -106,7 +108,6 @@
                     this.$router.push("/onlineJudge?page=1")
                 } else {
                     this.$router.push({path: "/onlineJudge", query: {page: this.pageNumber}})
-                    this.getList()
                 }
             }
         }

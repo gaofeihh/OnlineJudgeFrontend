@@ -15,7 +15,9 @@
                 <tbody>
                 <tr v-for="(item,index) in rankData" :key="item.id">
                     <td>{{rankBegin + index}}</td>
-                    <td>{{item.username}}</td>
+                    <td>
+                        <router-link :to="`/user/${item.username}`">{{item.username}}</router-link>
+                    </td>
                     <td>{{item.nickname}}</td>
                     <td>{{item.acceptedCount}}</td>
                     <td>{{item.submitCount}}</td>
@@ -28,7 +30,7 @@
                     <v-pagination
                             v-model="rankPage"
                             :length="totalPage"
-                            :total-visible="7"
+                            :total-visible="10"
                     />
                 </div>
                 <div class="pageNumInput">
@@ -50,10 +52,10 @@
             return {
                 rankData: [],
                 rankPage: 1,
-                rankSize: 50,
-                totalPage: 1,
+                rankSize: 20,
+                totalPage: 0,
                 number: 0,
-                size: 50,
+                size: 20,
             }
         },
         computed: {
@@ -69,19 +71,22 @@
                         this.totalPage = res.data.totalPages
                         this.number = res.data.number
                         this.size = res.data.size
-                        console.log(this.rankData)
+                        // console.log(this.rankData)
+                        // console.log(1)
                     })
             }
         },
         created() {
+            this.rankPage = this.page
             this.getRankList()
         },
         watch: {
             page() {
                 if (this.page < 1 || this.page > this.totalPage) {
-                    this.$router.push("/rankList?page=1")
+                    this.rankPage =1
+                    this.getRankList()
                 } else {
-                    this.pageLimit.pageNumber = this.page
+                    this.rankPage = this.page
                     this.getRankList()
                 }
             },
@@ -90,7 +95,6 @@
                     this.$router.push("/rankList?page=1")
                 } else {
                     this.$router.push({path: "/rankList", query: {page: this.rankPage}})
-                    this.getRankList()
                 }
             }
         }
@@ -177,12 +181,15 @@
                     }
                 }
             }
+
             .bottom {
                 overflow: hidden;
                 margin-top: 20px;
+
                 .text-center {
                     float: left;
                 }
+
                 .pageNumInput {
                     float: right;
                     margin-right: 10px;
@@ -192,7 +199,8 @@
                         height: 20px;
                         border: solid 1px #777777;
                     }
-                    [v-cloak]{
+
+                    [v-cloak] {
                         display: none
                     }
                 }

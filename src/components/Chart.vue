@@ -56,6 +56,7 @@
                     keys[i] = statusDic[keys[i]]
                 }
                 const values = Object.values(this.status)
+                this.data.length = 0
                 for (let i = 0; i < keys.length; i++) {
                     this.data.push({name: keys[i], value: values[i]})
                 }

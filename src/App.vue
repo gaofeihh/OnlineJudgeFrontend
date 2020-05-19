@@ -17,7 +17,7 @@
             <router-link class="form-bg2" to="/register">注册</router-link>
           </div>
           <div v-else class="user">
-            <router-link to="/user">{{getUsername}}</router-link>
+            <router-link :to="`/user/${this.getUsername}`">{{getUsername}}</router-link>
           </div>
         </div>
       </div>
@@ -71,8 +71,7 @@
             links: '/about',
             show: 'ABOUT'
           },
-        ]
-
+        ],
       }
     },
     beforeCreate() {
@@ -84,6 +83,7 @@
     methods: {
 
     },
+
   }
 </script>
 

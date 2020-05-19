@@ -76,9 +76,10 @@ const routes = [
         },
     },
     {
-        path: '/user',
+        path: '/user/:username',
         name: 'User',
         component: () => import('../views/User'),
+        props: (route) => ({getUsername: route.params.username}),
         beforeEnter: (to, from, next) => {
             if(!window.localStorage.getItem('username')) {
                 return next('/')
@@ -102,7 +103,7 @@ const routes = [
 
 const router = new VueRouter({
     routes,
-    mode: 'history',
+    // mode: 'history',
 })
 
 // 跟随页面修改标题
