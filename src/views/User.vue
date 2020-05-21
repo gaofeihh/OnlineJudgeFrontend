@@ -17,7 +17,7 @@
                 </v-form>
             </div>
             <div class="photo-box" v-if="isOwner">
-<!--                <v-img class="user-photo" src="../assets/user.jpg"/>-->
+                <!--                <v-img class="user-photo" src="../assets/user.jpg"/>-->
 
                 <div class="btns">
                     <v-btn class="btn" :color="color" @click="changeEdit">{{Editor}}</v-btn>
@@ -30,38 +30,79 @@
         <v-divider class="br"/>
 
         <div class="user-center">
-            <Chart :status="resultMap" />
+            <Chart :status="resultMap"/>
             <div class="result-list">
                 <div class="accepted-list">
                     <h2>accepted</h2>
-                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.accepted" :key="item">{{item}} &nbsp;</router-link>
+                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.accepted" :key="item">{{item}}
+                        &nbsp;
+                    </router-link>
                 </div>
 
                 <!--            <v-divider vertical="true"/>-->
 
                 <div class="unsolved-list">
                     <h2>unsolved</h2>
-                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.unsolved" :key="item">{{item}} &nbsp;</router-link>
+                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.unsolved" :key="item">{{item}}
+                        &nbsp;
+                    </router-link>
                 </div>
             </div>
         </div>
 
         <v-divider class="br"/>
 
-        <div class="log" v-if="logList.length !== 0 && isOwner">
+        <div class="log" v-if="isOwner">
             <div class="log-text"><h2>最近登录</h2></div>
             <div class="log-component">
                 <login-log v-for="item in logList" :key="item.id" :log-item="item"/>
             </div>
 
             <div v-if="hasLog" class="log-btn" @click="getLog">点击加载更多</div>
-            <div v-else class="log-btn">没有更多了...</div>
+            <div v-else class="log-btn-err">没有更多了...</div>
         </div>
 
-
-        <router-link to="">
-            <div class="re-password" title="修改密码">修改<br/>密码</div>
-        </router-link>
+        <v-dialog v-model="rePasswordCard" persistent width="800px">
+            <template v-slot:activator="{ on }">
+                <router-link to="">
+                    <div class="re-password" v-on="on" title="修改密码" @click="rePassword = true">修改<br/>密码</div>
+                </router-link>
+            </template>
+            <v-card>
+                <v-card-title class="headline">修改密码</v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-form ref="newPasswordRef">
+                            <v-row>
+                                <v-text-field label="原密码"
+                                              type="password"
+                                              v-model="newPasswordForm.oldPassword"
+                                              :rules="newPasswordRules.oldPassword"
+                                              required/>
+                            </v-row>
+                            <v-row>
+                                <v-text-field label="新密码"
+                                              type="password"
+                                              v-model="newPasswordForm.newPassword"
+                                              :rules="newPasswordRules.newPassword"
+                                              required/>
+                            </v-row>
+                            <v-row>
+                                <v-text-field label="确认新密码"
+                                              type="password"
+                                              :rules="newPasswordRules.reNewPassword"
+                                              required/>
+                            </v-row>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer/>
+                    <v-btn color="green darken-1" text @click="rePasswordCard = false">取消</v-btn>
+                    <v-btn color="green darken-1" text @click="newPasswordSubmit">修改</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
     </div>
 </template>
@@ -97,9 +138,23 @@
                     school: '',
                     username: ''
                 },
+                newPasswordForm: {
+                    oldPassword: '',
+                    newPassword: ''
+                },
                 postForm: {},
                 getJSON: {},
                 updateFormRules: rules.updateFormRules,
+                newPasswordRules: {
+                    oldPassword: rules.newPasswordRules.oldPassword,
+                    newPassword: rules.newPasswordRules.newPassword,
+                    reNewPassword: [
+                        value => !!value || '不能为空！',
+                        value => (value || '').length <= 20 || '不能高于20位',
+                        value => (value || '').length >= 7 || '不能低于7位',
+                        value => (!!value && value) === this.newPasswordForm.newPassword || '两次输入不相同'
+                    ]
+                },
                 logList: [],
                 logPage: 0,
                 hasLog: true,
@@ -108,7 +163,8 @@
                     unsolved: []
                 },
                 resultMap: {},
-                isOwner: false
+                isOwner: false,
+                rePasswordCard: false
             }
         },
         methods: {
@@ -184,7 +240,7 @@
                     .then(res => {
                         // 根据返回数据样式再修改
                         this.logList.push(...res.data.content)
-                        if (res.data.content.length === 0) {
+                        if (res.data.content.length < 5) {
                             this.hasLog = false
                         }
                     })
@@ -194,20 +250,33 @@
                 this.loginLog()
             },
             getCenterInfo() {
-                this.$http.get(`/user/center?username=${this.getUsername}`)
+                this.$http.get(`/user/center?isUserId=false&user=${this.getUsername}`)
                     .then(res => {
                         this.userCenterInfo.accepted = res.data.accepted
                         this.userCenterInfo.unsolved = res.data.unsolved
                         this.infoForm = res.data.userInfo
                         this.resultMap = res.data.resultMap
                         this.isOwner = res.data.isOwner
+                        window.document.title = res.data.userInfo.nickname
                         // this.resultMapKeys = Object.keys(res.data.resultMap)
                         // this.resultMapValues = Object.values(res.data.resultMap)
                     })
             },
             // format(date) {
             //     return formatDate(date, 2)
-            // }
+            // },
+            newPasswordSubmit() {
+                const isCan = this.$refs.newPasswordRef.validate()
+                if (isCan) {
+                    this.$http.patch('/user/password', this.newPasswordForm)
+                        .then(res => {
+                            if(res.status === 200) {
+                                this.rePasswordCard = false
+                                this.$message.success('修改成功')
+                            }
+                        })
+                }
+            }
         },
         computed: {
             ...mapGetters(['getUserId'])
@@ -279,6 +348,7 @@
             }
 
         }
+
         .br {
             width: 60%;
             margin: 20px auto;
@@ -290,16 +360,19 @@
                 margin: 20px auto;
                 box-shadow: 4px 4px 10px #f2f4fc;
                 border-radius: 10px;
+
                 .accepted-list {
-                    padding:0 20px 20px 20px;
+                    padding: 0 20px 20px 20px;
                 }
 
                 .unsolved-list {
-                    padding:0 20px 20px 20px;
+                    padding: 0 20px 20px 20px;
                 }
+
                 h2 {
                     color: #409eff;
                 }
+
                 a:hover {
                     color: #ffa500;
                     font-size: 17px;
@@ -335,6 +408,15 @@
             .log-btn:hover {
                 cursor: pointer;
                 color: #409eff;
+            }
+
+            .log-btn-err {
+                text-align: center;
+                color: #777777;
+            }
+
+            .log-btn-err:hover {
+                cursor: default;
             }
         }
 
@@ -386,14 +468,17 @@
                     }
                 }
             }
+
             .user-center {
                 .result-list {
                     width: 90%;
                 }
             }
+
             .br {
                 width: 90%;
             }
+
             .log {
                 width: 90%;
             }

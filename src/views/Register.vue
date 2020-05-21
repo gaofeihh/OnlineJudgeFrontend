@@ -106,6 +106,7 @@
 
 <style lang="less" scoped>
     #register {
+        margin-top: 40px;
         width: 450px;
         height: 600px;
         background-color: #ffffff;
@@ -131,7 +132,7 @@
     }
     @media (max-width: 780px) {
         #register {
-            width: 70%;
+            width: 90%;
         }
     }
 

@@ -133,7 +133,7 @@
     }
     @media (max-width: 780px) {
         .login-box {
-            width: 70%;
+            width: 90%;
         }
     }
 </style>

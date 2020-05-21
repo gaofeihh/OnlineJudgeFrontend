@@ -3,10 +3,10 @@
         <div class="problem">
             <div class="limit-info">
                 <div>
-                    时间限制:<span>{{problem.timeLimit}}</span>
+                    时间限制:<span>{{problem.timeLimit}}</span>ms
                 </div>
                 <div>
-                    内存限制:<span>{{problem.memoryLimit}}</span>
+                    内存限制:<span>{{problem.memoryLimit}}</span>KB
                 </div>
                 <div>
                     提交次数:<span>{{problem.submitCount}}</span>
@@ -167,7 +167,15 @@
         /*overflow-x: hidden;*/
     }
     @media screen and (max-width: 780px) {
-
+        display: block;
+        .problem {
+            width: 100%;
+            border-right: none;
+            border-bottom: solid 1px #777777;
+        }
+        .editor {
+            width: 100%;
+        }
     }
 }
 </style>

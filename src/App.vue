@@ -58,8 +58,8 @@
           },
           {
             id: 4,
-            links: '/download',
-            show: '常用下载'
+            links: '/contest',
+            show: '竞赛'
           },
           {
             id: 5,

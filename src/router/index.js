@@ -39,6 +39,14 @@ const routes = [
         }
     },
     {
+        path: '/contest',
+        name: 'Contest',
+        component: () => import('../views/Contest'),
+        meta: {
+            title: '竞赛'
+        }
+    },
+    {
         path: '/rankList',
         name: 'RankList',
         component: () => import('../views/RankList'),

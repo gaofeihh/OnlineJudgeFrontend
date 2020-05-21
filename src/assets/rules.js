@@ -57,6 +57,18 @@ const rules = {
             value => (value || '').length <= 20 || '不能高于20位',
             value => (value || '').length >= 5 || '不能低于5位'
         ]
+    },
+    newPasswordRules: {
+        oldPassword: [
+            value => !!value || '不能为空！',
+            value => (value || '').length <= 20 || '不能高于20位',
+            value => (value || '').length >= 7 || '不能低于7位'
+        ],
+        newPassword: [
+            value => !!value || '不能为空！',
+            value => (value || '').length <= 20 || '不能高于20位',
+            value => (value || '').length >= 7 || '不能低于7位'
+        ]
     }
 }
 export {rules}
