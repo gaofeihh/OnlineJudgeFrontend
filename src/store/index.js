@@ -6,14 +6,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     username: '',
-    userId: window.localStorage.getItem('userId')
+    userId: window.sessionStorage.getItem('userId')
   },
   mutations: {
     changeName(state) {
-      state.username = window.localStorage.getItem('username')
+      state.username = window.sessionStorage.getItem('username')
     },
     changeId(state) {
-      state.userId = window.localStorage.getItem('userId')
+      state.userId = window.sessionStorage.getItem('userId')
     }
   },
   actions: {

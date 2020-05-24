@@ -74,7 +74,7 @@ const routes = [
         name: 'Register',
         component: () => import('../views/Register'),
         beforeEnter: (to, from, next) => {
-            if(window.localStorage.getItem('username')) {
+            if(window.sessionStorage.getItem('username')) {
                 return next('/')
             }
             next()
@@ -88,12 +88,12 @@ const routes = [
         name: 'User',
         component: () => import('../views/User'),
         props: (route) => ({getUsername: route.params.username}),
-        beforeEnter: (to, from, next) => {
-            if(!window.localStorage.getItem('username')) {
-                return next('/')
-            }
-            next()
-        },
+        // beforeEnter: (to, from, next) => {
+        //     if(!window.sessionStorage.getItem('username')) {
+        //         return next('/')
+        //     }
+        //     next()
+        // },
         meta: {
             title: '个人信息'
         },

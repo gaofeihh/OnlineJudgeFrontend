@@ -68,9 +68,9 @@
                         this.$message.success(`登陆成功`)
                         // 1 将登陆之后的token保存到客户端的sessionStorage中
                         // token,保留登录状态
-                        window.localStorage.setItem("userId", res.data.id)
-                        window.localStorage.setItem("token", res.data.token)
-                        window.localStorage.setItem("username", res.data.username)
+                        window.sessionStorage.setItem("userId", res.data.id)
+                        window.sessionStorage.setItem("token", res.data.token)
+                        window.sessionStorage.setItem("username", res.data.username)
                         await this.$store.dispatch('asyncChangeName')
                         await this.$store.dispatch('asyncChangeId')
                         // 2 通过编程式导航跳转到主页 /

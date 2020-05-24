@@ -29,13 +29,13 @@
 
         <v-divider class="br"/>
 
-        <div class="user-center">
-            <Chart :status="resultMap"/>
+        <div class="user-center" v-if="JSON.stringify(resultMap) !== '{}'">
+            <StatusChart :status="resultMap"/>
             <div class="result-list">
                 <div class="accepted-list">
                     <h2>accepted</h2>
-                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.accepted" :key="item">{{item}}
-                        &nbsp;
+                    <router-link :to="`/problem/${item}`" v-for="item in userCenterInfo.accepted" :key="item">
+                        {{item}}&nbsp;
                     </router-link>
                 </div>
 
@@ -52,7 +52,7 @@
 
         <v-divider class="br"/>
 
-        <div class="log" v-if="isOwner">
+        <div class="log" v-show="isOwner">
             <div class="log-text"><h2>最近登录</h2></div>
             <div class="log-component">
                 <login-log v-for="item in logList" :key="item.id" :log-item="item"/>
@@ -112,13 +112,13 @@
     import {rules} from '../assets/rules'
     import {formatDate} from "@/assets/formatDate"
     import LoginLog from "@/components/LoginLog"
-    import Chart from "@/components/Chart"
+    import StatusChart from "@/components/StatusChart"
 
     export default {
         name: "User",
         components: {
-            'login-log': LoginLog,
-            Chart
+            StatusChart,
+            LoginLog,
         },
         props: {
             getUsername: String
@@ -231,19 +231,21 @@
             },
             logout() {
                 this.$http.post('/auth/logout')
-                window.localStorage.clear()
+                window.sessionStorage.clear()
                 this.$store.dispatch('asyncChangeName')
                 this.$router.push('/');
             },
             loginLog() {
-                this.$http.get(`/user/loginLog/${this.getUserId}?page=${this.logPage}&size=5`)
-                    .then(res => {
-                        // 根据返回数据样式再修改
-                        this.logList.push(...res.data.content)
-                        if (res.data.content.length < 5) {
-                            this.hasLog = false
-                        }
-                    })
+                if(this.getUserId) {
+                    this.$http.get(`/user/loginLog/${this.getUserId}?page=${this.logPage}&size=5`)
+                        .then(res => {
+                            // 根据返回数据样式再修改
+                            this.logList.push(...res.data.content)
+                            if (res.data.content.length < 5) {
+                                this.hasLog = false
+                            }
+                        })
+                }
             },
             getLog() {
                 this.logPage++

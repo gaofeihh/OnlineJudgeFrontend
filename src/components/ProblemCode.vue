@@ -27,6 +27,7 @@
     import "monaco-editor/esm/vs/editor/contrib/find/findController.js";
 
     export default {
+        name: 'ProblemCode',
         data() {
             return {
                 editor: null,

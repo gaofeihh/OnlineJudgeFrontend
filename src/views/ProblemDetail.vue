@@ -14,8 +14,8 @@
                 <div>
                     通过次数:<span>{{problem.acCount}}</span>
                 </div>
-                <div>
-                    我的状态:<span>{{problem.isAccepted === true ? '通过' : '未通过'}}</span>
+                <div style="color: green;">
+                    {{problem.isAccepted === true ? '通过' : ''}}
                 </div>
             </div>
             <div class="description">
@@ -46,21 +46,21 @@
             </div>
         </div>
         <div class="editor">
-            <Code :user-id="parseInt(this.$store.getters.getUserId)"
+            <problem-code :user-id="parseInt(this.$store.getters.getUserId)"
                   :question-id="parseInt(this.problem.problemId)"/>
         </div>
     </div>
 </template>
 
 <script>
-    import Code from "@/components/Code";
+    import ProblemCode from "@/components/ProblemCode";
     export default {
         name: "ProblemDetail",
         props: {
             id: String
         },
         components: {
-            Code
+            ProblemCode
         },
         data() {
             return {

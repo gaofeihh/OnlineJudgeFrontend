@@ -7,7 +7,7 @@
     import {statusDic} from '@/assets/dictionary'
 
     export default {
-        name: 'Chart',
+        name: 'StatusChart',
         props: {
             status: Object
         },
