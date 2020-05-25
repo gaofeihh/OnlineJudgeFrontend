@@ -2,16 +2,16 @@
     <div id="login-log">
         <div class="log-des">
             <div>
-                登录地：<span>{{logItem.ip}}</span>
+                IP:<span>{{logItem.ip}}</span>
             </div>
             <div>
-                时长：<span>{{format(parseInt(logItem.logoutTime)-parseInt(logItem.createAt), 3)}}</span>
+                登入:<span>{{format(parseInt(logItem.createAt))}}</span>
             </div>
             <div>
-                登录：<span>{{format(logItem.createAt)}}</span>
+                登出:<span>{{format(parseInt(logItem.logoutTime))}}</span>
             </div>
             <div>
-                登出：<span>{{format(logItem.logoutTime)}}</span>
+                登录时长:<span>{{toHMS(parseInt(logItem.logoutTime) - logItem.createAt)}}</span>
             </div>
         </div>
     </div>
@@ -19,6 +19,7 @@
 
 <script>
     import {formatDate} from "@/assets/formatDate";
+    import {MilltoHMS} from "../assets/formatDate";
 
     export default {
         name: "LoginLog",
@@ -26,9 +27,11 @@
             logItem: Object
         },
         methods: {
-            format(date, rule) {
-                // console.log(this.logItem)
-                return formatDate(date, rule)
+            format(date) {
+                return formatDate(date)
+            },
+            toHMS(mss) {
+                return MilltoHMS(mss)
             }
         }
     }
@@ -47,22 +50,14 @@
             div {
                 display: inline-block;
             }
-            div:nth-of-type(1) span {
+            span:nth-of-type(1) {
                 color: #9d9d9d;
                 display: inline-block;
-                width: 5em;
+                width: auto;
+                margin-right: 3em;
+                margin-left: 0.5em;
             }
-            div:nth-of-type(2) span {
-                color: #9d9d9d;
-                display: inline-block;
-                width: 5em;
-            }
-            div:nth-of-type(3) span {
-                color: #9d9d9d;
-                display: inline-block;
-                width: 12em;
-            }
-            div:nth-of-type(4) span {
+            span:nth-of-type(2) {
                 color: #9d9d9d;
                 display: inline-block;
                 width: 12em;

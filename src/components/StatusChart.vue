@@ -82,8 +82,8 @@
 </script>
 <style lang="less" scoped>
     #main {
-        width: 500px;
-        height: 400px;
+        width: 300px;
+        height: 200px;
         margin: 0 auto;
     }
 
