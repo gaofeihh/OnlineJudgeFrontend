@@ -50,14 +50,22 @@
             div {
                 display: inline-block;
             }
-            span:nth-of-type(1) {
+            div:nth-of-type(1) span {
                 color: #9d9d9d;
                 display: inline-block;
-                width: auto;
-                margin-right: 3em;
-                margin-left: 0.5em;
+                width: 10em;
             }
-            span:nth-of-type(2) {
+            div:nth-of-type(2) span {
+                color: #9d9d9d;
+                display: inline-block;
+                width: 12em;
+            }
+            div:nth-of-type(3) span {
+                color: #9d9d9d;
+                display: inline-block;
+                width: 12em;
+            }
+            div:nth-of-type(4) span {
                 color: #9d9d9d;
                 display: inline-block;
                 width: 12em;

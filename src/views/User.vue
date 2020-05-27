@@ -3,8 +3,8 @@
         <v-card class="user-info-card">
             <div class="info-form">
                 <v-form ref="updateRef" :model="infoForm" :rules="updateFormRules">
-                    <v-text-field type="text" disabled v-model="id" label="ID"/>
-                    <v-text-field type="text" disabled v-model="createAt" label="注册时间"/>
+                    <v-text-field type="text" disabled v-model="infoForm.id" label="ID"/>
+                    <v-text-field type="text" disabled v-model="infoForm.rank" label="排名"/>
                     <v-text-field type="text" v-model="infoForm.email" :disabled="isEdit" label="邮箱"
                                   :rules="updateFormRules.email"/>
                     <v-text-field type="text" v-model="infoForm.nickname" :disabled="isEdit" label="昵称"
@@ -16,13 +16,21 @@
                     <v-text-field type="text" v-model="infoForm.username" disabled label="用户名"/>
                 </v-form>
             </div>
-            <div class="photo-box" v-if="isOwner">
+            <div class="photo-box">
                 <!--                <v-img class="user-photo" src="../assets/user.jpg"/>-->
-
-                <div class="btns">
-                    <v-btn class="btn" :color="color" @click="changeEdit">{{Editor}}</v-btn>
-                    <v-btn class="btn" color="primary" @click="postInfo" :disabled="isEdit">提交修改</v-btn>
-                    <v-btn class="btn" color="error" @click="logout">退出登录</v-btn>
+                <StatusChart class="status" :status="resultMap" v-if="JSON.stringify(resultMap) !== '{}'"/>
+                <div v-else class="status" style="text-align: center; width:100%; height: 200px;padding-top: 80px"><h2>
+                    暂无状态信息</h2></div>
+                <div class="btns" v-if="isOwner">
+                    <div class="btn">
+                        <v-btn :color="color" @click="changeEdit">{{Editor}}</v-btn>
+                    </div>
+                    <div class="btn">
+                        <v-btn color="primary" @click="postInfo" :disabled="isEdit">提交修改</v-btn>
+                    </div>
+                    <div class="btn">
+                        <v-btn color="error" @click="logout">退出登录</v-btn>
+                    </div>
                 </div>
             </div>
         </v-card>
@@ -30,7 +38,7 @@
         <v-divider class="br"/>
 
         <div class="user-center" v-if="JSON.stringify(resultMap) !== '{}'">
-            <StatusChart :status="resultMap"/>
+
             <div class="result-list">
                 <div class="accepted-list">
                     <h2>accepted</h2>
@@ -108,7 +116,7 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex'
+    // import {mapGetters} from 'vuex'
     import {rules} from '../assets/rules'
     import {formatDate} from "@/assets/formatDate"
     import LoginLog from "@/components/LoginLog"
@@ -215,7 +223,7 @@
                 // console.log(this.postForm)
                 if (isFormat) {
                     const submit = async () => {
-                        const url = '/user/' + this.getUserId
+                        const url = '/user/' + this.id
                         const res = await this.$http.post(url, this.postForm)
                         if (res.status !== 200) {
                             console.log(res.errors)
@@ -236,16 +244,15 @@
                 this.$router.push('/');
             },
             loginLog() {
-                if(this.getUserId) {
-                    this.$http.get(`/user/loginLog/${this.getUserId}?page=${this.logPage}&size=5`)
-                        .then(res => {
-                            // 根据返回数据样式再修改
-                            this.logList.push(...res.data.content)
-                            if (res.data.content.length < 5) {
-                                this.hasLog = false
-                            }
-                        })
-                }
+                this.$http.get(`/user/loginLog/${this.id}?page=${this.logPage}&size=5`)
+                    .then(res => {
+                        // 根据返回数据样式再修改
+                        this.logList.push(...res.data.content)
+                        if (res.data.content.length < 5) {
+                            this.hasLog = false
+                        }
+                    })
+
             },
             getLog() {
                 this.logPage++
@@ -254,6 +261,7 @@
             getCenterInfo() {
                 this.$http.get(`/user/center?isUserId=false&user=${this.getUsername}`)
                     .then(res => {
+                        this.id = res.data.userInfo.id
                         this.userCenterInfo.accepted = res.data.accepted
                         this.userCenterInfo.unsolved = res.data.unsolved
                         this.infoForm = res.data.userInfo
@@ -262,6 +270,7 @@
                         window.document.title = res.data.userInfo.nickname
                         // this.resultMapKeys = Object.keys(res.data.resultMap)
                         // this.resultMapValues = Object.values(res.data.resultMap)
+                        this.loginLog()
                     })
             },
             // format(date) {
@@ -272,7 +281,7 @@
                 if (isCan) {
                     this.$http.patch('/user/password', this.newPasswordForm)
                         .then(res => {
-                            if(res.status === 200) {
+                            if (res.status === 200) {
                                 this.rePasswordCard = false
                                 this.$message.success('修改成功')
                             }
@@ -280,20 +289,20 @@
                 }
             }
         },
-        computed: {
-            ...mapGetters(['getUserId'])
-        },
+        // computed: {
+        //     ...mapGetters(['getUserId'])
+        // },
         created() {
             // this.getInfo()
             this.getCenterInfo()
-            this.loginLog()
+            // this.loginLog()
         },
         watch: {
             getUsername() {
                 // this.getInfo()
                 this.logList.length = 0
                 this.getCenterInfo()
-                this.loginLog()
+                // this.loginLog()
 
             }
         }
@@ -306,7 +315,7 @@
 
         .user-info-card {
             padding: 20px;
-            width: 60%;
+            width: 70%;
             /*height: 200px;*/
             margin: 0 auto;
             /*border: solid 1px #777777;*/
@@ -327,24 +336,20 @@
                 padding-top: 50px;
                 /*flex: 1;*/
 
-                .user-photo {
-                    margin: 0 auto;
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 50%;
-                }
+                /*.user-photo {*/
+                /*    margin: 0 auto;*/
+                /*    width: 150px;*/
+                /*    height: 150px;*/
+                /*    border-radius: 50%;*/
+                /*}*/
 
                 .btns {
-                    margin: 0 auto;
-                    width: 95px;
-                    /*display: block;*/
-                    /*margin-top: 50px;*/
-                    /*margin-left: 20px;*/
-                    /*margin-left: 50%;*/
-                    /*transform: translate(-50%, 0);*/
+                    margin: 90px auto 0 auto;
+                    width: 80%;
+                    display: flex;
 
                     .btn {
-                        margin-top: 40px;
+                        flex: 1;
                     }
                 }
             }
@@ -352,13 +357,13 @@
         }
 
         .br {
-            width: 60%;
+            width: 70%;
             margin: 20px auto;
         }
 
         .user-center {
             .result-list {
-                width: 60%;
+                width: 70%;
                 margin: 20px auto;
                 box-shadow: 4px 4px 10px #f2f4fc;
                 border-radius: 10px;
@@ -386,8 +391,8 @@
             margin-top: 20px;
             margin-left: auto;
             margin-right: auto;
-            width: 60%;
-            height: 420px;
+            width: 70%;
+            max-height: 420px;
             padding: 0 10px 10px 10px;
             overflow: scroll;
             overflow-x: hidden;
@@ -455,7 +460,7 @@
                     width: fit-content;
                     margin: 0 auto;
 
-                    .user-photo {
+                    .status {
                         display: none;
                     }
 
@@ -466,6 +471,10 @@
                         .btn {
                             width: 80px;
                             margin-left: 10px;
+
+                            button {
+                                width: 90%;
+                            }
                         }
                     }
                 }

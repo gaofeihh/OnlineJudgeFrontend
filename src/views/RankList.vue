@@ -52,10 +52,10 @@
             return {
                 rankData: [],
                 rankPage: 1,
-                rankSize: 20,
+                rankSize: 50,
                 totalPage: 0,
                 number: 0,
-                size: 20,
+                size: 50,
             }
         },
         computed: {
@@ -187,7 +187,7 @@
                 margin-top: 20px;
 
                 .text-center {
-                    float: left;
+                    width: 100%;
                 }
 
                 .pageNumInput {

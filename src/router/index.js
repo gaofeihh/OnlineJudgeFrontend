@@ -60,7 +60,7 @@ const routes = [
         name: 'Login',
         component: () => import('../views/Login.vue'),
         beforeEnter: (to, from, next) => {
-          if(window.localStorage.getItem('username')) {
+          if(window.sessionStorage.getItem('username')) {
               return next('/')
           }
           next()
@@ -98,6 +98,12 @@ const routes = [
             title: '个人信息'
         },
 
+    },
+    {
+        path: '/contest-detail/:id',
+        name: 'ContestDetail',
+        component: () => import('../views/ContestDetail'),
+        props: (route) => ({contestId: route.params.id})
     },
     // 捕获非法路径
     {

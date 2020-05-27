@@ -22,8 +22,8 @@
                 const myChart = echarts.init(document.getElementById(id))
                 this.charts = myChart.setOption({
                     title: {
-                        text: '解题状态',
-                        left: 'center'
+                        text: '状态',
+                        left: 'left'
                     },
                     tooltip: {
                         trigger: 'item',
@@ -82,14 +82,14 @@
 </script>
 <style lang="less" scoped>
     #main {
-        width: 300px;
+        width: 350px;
         height: 200px;
         margin: 0 auto;
     }
 
     @media screen and (max-width: 780px) {
         #main {
-            width: 90%;
+            width: 250px
         }
     }
 </style>

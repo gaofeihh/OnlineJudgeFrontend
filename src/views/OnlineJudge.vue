@@ -16,16 +16,17 @@
             <table border="1">
                 <thead>
                 <tr>
+                    <td></td>
                     <td>编号</td>
                     <td>标题</td>
                     <td>Ratio(AC/Submit)</td>
                     <td>难度</td>
                     <td>最后提交</td>
-                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item in problemList" :key="item.problemId">
+                    <td class="true-class">{{item.isAccepted ? '✔' : ''}}</td>
                     <td>{{item.problemId}}</td>
                     <td>
                         <router-link :to="`/problem/${item.problemId}`">{{item.hide ? '' : item.title}}</router-link>
@@ -35,7 +36,6 @@
                     </td>
                     <td>0%</td>
                     <td>{{format(item.lastSubmit)}}</td>
-                    <td class="true-class">{{item.isAccepted ? '✔' : ''}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -165,30 +165,30 @@
 
                 }
 
-                td:nth-of-type(1) {
+                td:nth-of-type(2) {
                     width: 7%;
                 }
 
-                td:nth-of-type(2) {
+                td:nth-of-type(3) {
                     width: auto;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
 
-                td:nth-of-type(3) {
+                td:nth-of-type(4) {
                     width: 17%;
                 }
 
-                td:nth-of-type(4) {
+                td:nth-of-type(5) {
                     width: 10%;
                 }
 
-                td:nth-of-type(5) {
+                td:nth-of-type(6) {
                     width: 15%;
                 }
 
-                td:nth-of-type(6) {
+                td:nth-of-type(1) {
                     width: 4%;
                 }
 
@@ -226,7 +226,7 @@
                 overflow: hidden;
 
                 .text-center {
-                    float: left;
+                    width: 100%;
                 }
 
                 .pageNumInput {
@@ -272,12 +272,8 @@
                 box-shadow: 5px 5px 10px #f2f4fc;
 
                 table {
-                    td:nth-of-type(1) {
+                    td:nth-of-type(2) {
                         width: 20%;
-                    }
-
-                    td:nth-of-type(3) {
-                        display: none;
                     }
 
                     td:nth-of-type(4) {
@@ -289,6 +285,10 @@
                     }
 
                     td:nth-of-type(6) {
+                        display: none;
+                    }
+
+                    td:nth-of-type(1) {
                         width: 10%;
                     }
                 }

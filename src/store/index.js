@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     username: '',
-    userId: window.sessionStorage.getItem('userId')
+    userId: window.sessionStorage.getItem('userId'),
+    requestCount: 0
   },
   mutations: {
     changeName(state) {
@@ -14,6 +15,12 @@ export default new Vuex.Store({
     },
     changeId(state) {
       state.userId = window.sessionStorage.getItem('userId')
+    },
+    addRequest(state) {
+      state.requestCount++
+    },
+    subRequest(state) {
+      state.requestCount--
     }
   },
   actions: {
@@ -22,7 +29,13 @@ export default new Vuex.Store({
     },
     asyncChangeId(context) {
       context.commit('changeId')
-    }
+    },
+    // asyncChangeAddRequest(context) {
+    //   context.commit('addRequest')
+    // },
+    // asyncChangeSubRequest(context) {
+    //   context.commit('subRequest')
+    // }
   },
   getters: {
     getUsername(state) {
@@ -30,6 +43,9 @@ export default new Vuex.Store({
     },
     getUserId(state) {
       return state.userId
+    },
+    getRequestCount(state) {
+      return state.requestCount
     }
   },
   modules: {

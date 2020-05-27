@@ -2,7 +2,7 @@
   <div id="app">
     <div class="nav">
       <div class="navbar">
-        <a class="logo">SDTBU OJ</a>
+        <router-link to="/" class="logo">SDTBU OJ</router-link>
         <label for="toggle-nav">
           <p>选项</p>
         </label>
@@ -21,6 +21,7 @@
           </div>
         </div>
       </div>
+      <loading-cartoon />
     </div>
     <!--路由占位符-->
     <keep-alive>
@@ -33,10 +34,11 @@
 
 <script>
   import {mapGetters} from 'vuex'
+  import LoadingCartoon from "@/components/LoadingCartoon";
 
   export default {
     name: 'app',
-    components: {},
+    components: {LoadingCartoon},
     data() {
       return {
         // isSelect: '/' + this.$route.name,

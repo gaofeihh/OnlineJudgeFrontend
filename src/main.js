@@ -14,15 +14,22 @@ axios.defaults.withCredentials = true //跨域
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 
+// http request 请求拦截器
+axios.interceptors.request.use(request => {
+    store.commit('addRequest')
+    return request
+})
 
 // http response 响应拦截器
 axios.interceptors.response.use(response => {
+    store.commit('subRequest')
     if (response.status === 200) {
         return Promise.resolve(response)
     } else {
         return Promise.reject(response)
     }
 }, error => {
+    store.commit('subRequest')
     if (error.response.status) {
         switch (error.response.status) {
             case 401:
