@@ -42,6 +42,7 @@ const routes = [
         path: '/contest',
         name: 'Contest',
         component: () => import('../views/Contest'),
+        props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
             title: '竞赛'
         }

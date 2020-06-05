@@ -9,8 +9,18 @@ const statusDic = {
     "COMPILE_ERROR": "编译错误",
     "SYSTEM_ERROR": "系统错误",
     "fAILED_ERROR": "其他错误"
-}
+};
+
+const contestStatus = {
+    "REGISTERED": "已报名",
+    "PUBLIC": "开放",
+    "NEED_REGISTER": "需要报名",
+    "PROTECT": "有限制",
+    "PRIVATE": "私有",
+    "ENDED": "已结束"
+};
 
 module.exports = {
-    statusDic
+    statusDic,
+    contestStatus
 }

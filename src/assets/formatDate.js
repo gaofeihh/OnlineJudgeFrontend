@@ -7,7 +7,7 @@ export function formatDate(date, rule = 1) {
                     pad(d.getHours(), 2) + ":" + pad(d.getMinutes(), 2) + ":" + pad(d.getSeconds(), 2)
         } else if(rule === 2) {
                 let d = new Date(date)
-                return pad(d.getFullYear(), 2) + "-" + pad((d.getMonth() + 1), 2) + "-" + pad(d.getDate(), 2)
+                return pad(d.getFullYear(), 4) + "-" + pad((d.getMonth() + 1), 2) + "-" + pad(d.getDate(), 2)
         }
 }
 export function MilltoHMS(mss) {

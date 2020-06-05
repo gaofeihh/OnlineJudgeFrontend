@@ -60,7 +60,7 @@
           },
           {
             id: 4,
-            links: '/contest',
+            links: '/contest?page=1',
             show: '竞赛'
           },
           {
@@ -127,6 +127,7 @@
 
     a {
       text-decoration: none;
+      color: #409eff;
     }
 
     .nav {
