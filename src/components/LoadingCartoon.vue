@@ -13,7 +13,7 @@
         name: "LoadingCartoon",
         computed: {
             requestCount() {
-                return this.$store.getters.getRequestCount
+                return this.$store.getters['load/getRequestCount']
             }
         }
     }

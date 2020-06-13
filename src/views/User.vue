@@ -261,16 +261,18 @@
             getCenterInfo() {
                 this.$http.get(`/user/center?isUserId=false&user=${this.getUsername}`)
                     .then(res => {
-                        this.id = res.data.userInfo.id
-                        this.userCenterInfo.accepted = res.data.accepted
-                        this.userCenterInfo.unsolved = res.data.unsolved
-                        this.infoForm = res.data.userInfo
-                        this.resultMap = res.data.resultMap
-                        this.isOwner = res.data.isOwner
-                        window.document.title = res.data.userInfo.nickname
-                        // this.resultMapKeys = Object.keys(res.data.resultMap)
-                        // this.resultMapValues = Object.values(res.data.resultMap)
-                        this.loginLog()
+                        if(res) {
+                            this.id = res.data.userInfo.id
+                            this.userCenterInfo.accepted = res.data.accepted
+                            this.userCenterInfo.unsolved = res.data.unsolved
+                            this.infoForm = res.data.userInfo
+                            this.resultMap = res.data.resultMap
+                            this.isOwner = res.data.isOwner
+                            window.document.title = res.data.userInfo.nickname
+                            // this.resultMapKeys = Object.keys(res.data.resultMap)
+                            // this.resultMapValues = Object.values(res.data.resultMap)
+                            this.loginLog()
+                        }
                     })
             },
             // format(date) {
@@ -281,7 +283,7 @@
                 if (isCan) {
                     this.$http.patch('/user/password', this.newPasswordForm)
                         .then(res => {
-                            if (res.status === 200) {
+                            if (res && res.status === 200) {
                                 this.rePasswordCard = false
                                 this.$message.success('修改成功')
                             }

@@ -2,10 +2,10 @@
     <div id="contest-item">
         <div class="contest-main">
             <div class="contest-title">
-                <h2>
-                    <router-link :to="`/contest-detail/${contestObj.id}`">
+                <h2 @click="titleHandle">
+<!--                    <router-link :to="`/contest-detail/${contestObj.id}`">-->
                         {{contestObj.name}}
-                    </router-link>
+<!--                    </router-link>-->
                 </h2>
                 <v-icon v-if="contestObj.privilege === 'PROTECT'" small color="#409eff">fas fa-lock</v-icon>
             </div>
@@ -31,7 +31,8 @@
                    @click="enterContest">进入
             </v-btn>
             <v-btn v-else-if="contestObj.privilege === 'NEED_REGISTER'"
-                   color="primary">报名
+                   color="primary"
+                   @click="registerContest" >报名
             </v-btn>
             <v-btn v-else-if="contestObj.privilege === 'PROTECT'"
                    color="primary"
@@ -65,6 +66,22 @@
             },
             enterContest() {
                 this.$router.push(`/contest-detail/${this.contestObj.id}`);
+            },
+            registerContest() {
+                alert('报名')
+            },
+            titleHandle() {
+                if(this.contestObj.status === 'ENDED') {
+                    this.$router.push(`/contest-detail/${this.contestObj.id}`)
+                } else if(this.contestObj.privilege === 'PUBLIC') {
+                    this.enterContest()
+                } else if(this.contestObj.privilege === 'PROTECT') {
+                    this.inputPassword()
+                } else if(this.contestObj.privilege === 'NEED_REGISTER') {
+                    this.registerContest()
+                } else {
+                    this.$router.push(`/contest-detail/${this.contestObj.id}`)
+                }
             }
         }
     }
@@ -91,7 +108,7 @@
                 h2 {
                     display: inline;
                     margin-right: 20px;
-
+                    cursor: pointer;
                     a {
                         color: #495060;
                     }

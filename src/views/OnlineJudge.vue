@@ -80,13 +80,21 @@
             getList() {
                 this.$http.get(`/problems?page=${this.pageNumber - 1}&size=${this.pageSize}`)
                     .then(value => {
-                        this.problemList = value.data.content
-                        this.totalPage = value.data.totalPages
-                        // console.log(1)
+                        if(value) {
+                            this.problemList = value.data.content
+                            this.totalPage = value.data.totalPages
+                            // console.log(1)
+                        }
                     })
             },
             searchById() {
-                this.$router.push(`/problem/${this.searchId}`)
+                this.$http.get(`/problem/${this.searchId}`).then(res => {
+                    // console.log(res)
+                    if (res && res.status === 200) {
+                        this.$router.push(`/problem/${this.searchId}`)
+                        // return;
+                    }
+                })
             }
         },
         created() {
@@ -95,20 +103,21 @@
         },
         watch: {
             page() {
-                if (this.page < 1 || this.page > this.totalPage) {
-                    this.pageNumber = 1
-                    this.getList()
-                } else {
+                // if (this.page < 1 || this.page > this.totalPage) {
+                //     this.pageNumber = 1
+                //     this.getList()
+                // } else {
                     this.pageNumber = this.page
-                    this.getList()
-                }
+
+                // }
             },
             pageNumber() {
                 if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
                     this.$router.push("/onlineJudge?page=1")
                 } else {
-                    this.$router.push({path: "/onlineJudge", query: {page: this.pageNumber}})
+                    this.$router.push(`/onlineJudge?page=${this.pageNumber}`)
                 }
+                this.getList()
             }
         }
     }

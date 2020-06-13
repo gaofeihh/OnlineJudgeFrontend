@@ -17,7 +17,11 @@ const contestStatus = {
     "NEED_REGISTER": "需要报名",
     "PROTECT": "有限制",
     "PRIVATE": "私有",
-    "ENDED": "已结束"
+    "ENDED": "已结束",
+    "RUNNING": "进行中",
+    "PENDING": "准备中",
+    "REGISTERING": "报名中",
+    "REJECTED": "被拒绝"
 };
 
 module.exports = {

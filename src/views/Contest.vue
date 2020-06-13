@@ -51,7 +51,7 @@
             return {
                 contestList: [],
                 contestPage: 1,
-                contestSize: 15,
+                contestSize: 10,
                 contestTotalPage: 0,
                 passwordDialog: false,
                 protectContest: '',
@@ -62,9 +62,11 @@
             getContestList() {
                 this.$http.get(`/contest/all?page=${this.contestPage-1}&size=${this.contestSize}`)
                     .then(res => {
-                        // console.log(res.data)
-                        this.contestList = res.data.content
-                        this.contestTotalPage = res.data.totalPages
+                        if(res) {
+                            // console.log(res.data)
+                            this.contestList = res.data.content
+                            this.contestTotalPage = res.data.totalPages
+                        }
                     })
             },
             changePasswordDialog(contestId) {
@@ -82,20 +84,21 @@
         },
         watch: {
             page() {
-                if (this.page < 1 || this.page > this.contestTotalPage) {
-                    this.contestPage = 1
-                    this.getContestList()
-                } else {
+                // if (this.page < 1 || this.page > this.contestTotalPage) {
+                //     this.contestPage = 1
+                //     this.getContestList()
+                // } else {
                     this.contestPage = this.page
-                    this.getContestList()
-                }
+
+                // }
             },
             contestPage() {
-                if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
-                    this.$router.push("/contest?page=1")
+                if (this.contestPage < 1 || this.contestPage > this.contestTotalPage) {
+                        this.$router.push("/contest?page=1")
                 } else {
-                    this.$router.push({path: "/contest", query: {page: this.contestPage}})
+                    this.$router.push(`/contest/?page=${this.contestPage}`)
                 }
+                this.getContestList()
             }
         }
     }

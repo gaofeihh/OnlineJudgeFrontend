@@ -16,50 +16,51 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // http request 请求拦截器
 axios.interceptors.request.use(request => {
-    store.commit('addRequest')
+    store.commit('load/addRequest')
     return request
 })
 
 // http response 响应拦截器
 axios.interceptors.response.use(response => {
-    store.commit('subRequest')
+    store.commit('load/subRequest')
     if (response.status === 200) {
         return Promise.resolve(response)
     } else {
         return Promise.reject(response)
     }
 }, error => {
-    store.commit('subRequest')
+    store.commit('load/subRequest');
     if (error.response.status) {
         switch (error.response.status) {
-            case 401:
-                router.push('/login')
-                Message.error('身份过期请登录')
-                break;
             case 403:
-                Message.error(`拒绝访问403,${error.response.data.errors}`)
+                window.sessionStorage.clear();
+                router.push('/login');
+                Message.error('身份过期请登录');
+                break;
+            case 401:
+                Message.error(`拒绝访问,未获取相关权限,${error.response.data.errors}`);
                 break;
             case 404:
-                router.go(-1)
-                Message.error('请求错误404')
+                router.push({name: 404});
+                Message.error('请求错误404');
                 break;
             case 408:
-                Message.error('请求超时408')
+                Message.error('请求超时408');
                 break;
             case 500:
-                Message.error('服务器内部错误500')
+                Message.error('服务器内部错误500');
                 break;
             case 502:
-                Message.error('网络错误502')
+                Message.error('网络错误502');
                 break;
             case 503:
-                Message.error('服务不可用503')
+                Message.error('服务不可用503');
                 break;
             case 504:
-                Message.error('网络超时504')
+                Message.error('网络超时504');
                 break;
             default:
-                router.go(-1)
+                // router.go(-1)
                 Message.error(`错误${error.response.data.errors}`)
         }
     } else {

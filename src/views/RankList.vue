@@ -67,12 +67,14 @@
             getRankList() {
                 this.$http.get(`/user/rank?page=${this.rankPage - 1}&size=${this.rankSize}`)
                     .then(res => {
-                        this.rankData = res.data.content
-                        this.totalPage = res.data.totalPages
-                        this.number = res.data.number
-                        this.size = res.data.size
-                        // console.log(this.rankData)
-                        // console.log(1)
+                        if(res) {
+                            this.rankData = res.data.content
+                            this.totalPage = res.data.totalPages
+                            this.number = res.data.number
+                            this.size = res.data.size
+                            // console.log(this.rankData)
+                            // console.log(1)
+                        }
                     })
             }
         },
@@ -82,20 +84,21 @@
         },
         watch: {
             page() {
-                if (this.page < 1 || this.page > this.totalPage) {
-                    this.rankPage =1
-                    this.getRankList()
-                } else {
+                // if (this.page < 1 || this.page > this.totalPage) {
+                //     this.rankPage =1
+                //     this.getRankList()
+                // } else {
                     this.rankPage = this.page
-                    this.getRankList()
-                }
+
+                // }
             },
             rankPage() {
                 if (this.rankPage < 1 || this.rankPage > this.totalPage) {
                     this.$router.push("/rankList?page=1")
                 } else {
-                    this.$router.push({path: "/rankList", query: {page: this.rankPage}})
+                    this.$router.push(`/rankList?page=${this.rankPage}`)
                 }
+                this.getRankList()
             }
         }
     }

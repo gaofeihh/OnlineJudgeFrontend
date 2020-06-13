@@ -25,7 +25,7 @@ const routes = [
         path: '/problem/:id',
         name: 'Problem',
         component: () => import('../views/ProblemDetail'),
-        props: true,
+        props: (route) => ({id: route.params.id, contestId: route.query.contestId}),
         // meta: {
         //     title: '题目详情'
         // }
@@ -109,6 +109,7 @@ const routes = [
     // 捕获非法路径
     {
         path: '*',
+        name: '404',
         component: () => import('../views/Notfound'),
         meta: {
             title: '404'
@@ -130,4 +131,9 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
+// 解决跳转路由相同报错
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return routerPush.call(this, location).catch(error => error)
+}
 export default router

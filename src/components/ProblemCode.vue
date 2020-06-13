@@ -31,8 +31,8 @@
         data() {
             return {
                 editor: null,
-                language: "c",
-                languagesList: ['c', 'cpp', 'java', 'pascal', 'ruby', 'python'],
+                language: "C_11",
+                languagesList: ['C_11', 'C_98', 'JAVA_8', 'PYTHON_2', 'PYTHON_3'],
                 width: "100%",
                 height: "100%"
             };
@@ -45,7 +45,8 @@
           submitHandle() {
             alert(`code:`+this.editor.getValue()+`,
             userId——`+this.userId+`,
-            problemId——`+this.questionId)
+            problemId——`+this.questionId+`,
+            language——`+this.language)
             // 提交请求
           }
         },

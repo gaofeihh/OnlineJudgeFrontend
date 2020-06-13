@@ -1,17 +1,17 @@
 <template>
     <div id="contest-detail">
-        <h1>新生编程大赛</h1>
+        <h1>{{contestInfo.name}}</h1>
         <div class="contest-detail-about">
             <v-icon>fas fa-calendar</v-icon>
-            <span>2020-06-01</span>
+            <span v-cloak>{{formatData(contestInfo.startAt)}}</span>
             <v-icon>fas fa-clock</v-icon>
-            <span>{{dateTime(3600000)}}</span>
+            <span v-cloak>{{dateTime(contestInfo.endBefore - contestInfo.startAt)}}</span>
             <v-icon small>fas fa-users</v-icon>
-            <span>ACM</span>
+            <span>{{contestInfo.owner}}</span>
             <v-icon small>fas fa-hand-paper</v-icon>
-            <span>私有</span>
+            <span>{{status[contestInfo.privilege]}}</span>
             <v-icon small>fas fa-info</v-icon>
-            <span>未开始</span>
+            <span>{{status[contestInfo.status]}}</span>
         </div>
         <div class="contest-problem-list">
             <div class="problem-list-h2">
@@ -20,7 +20,7 @@
             <div class="problem-list-content">
                 <div class="problem-list-title" v-for="(item, index) in contestProblemList" :key="item.id">
                     <div class="problem-list-title-no">{{index+1}}</div>
-                    <router-link :to="`/problem/${item.id}`">{{item.title}}</router-link>
+                    <router-link :to="`/problem/${item.order}?contestId=${contestId}`">{{item.title}}</router-link>
                     <div class="problem-list-count">{{item.acCount}}/{{item.submitCount}}</div>
                 </div>
             </div>
@@ -29,7 +29,8 @@
 </template>
 
 <script>
-    import {MilltoHMS} from "@/assets/formatDate";
+    import {MilltoHMS, formatDate} from "@/assets/formatDate";
+    import {contestStatus} from "@/assets/dictionary";
 
     export default {
         name: "ContestDetail",
@@ -38,42 +39,31 @@
         },
         data() {
             return {
-                contestProblemList: [
-                    {
-                        id: 1,
-                        title: '第一题',
-                        acCount: 0,
-                        submitCount: 2
-                    },
-                    {
-                        id: 2,
-                        title: '第二题',
-                        acCount: 0,
-                        submitCount: 2
-                    },
-                    {
-                        id: 3,
-                        title: '第三题',
-                        acCount: 0,
-                        submitCount: 2
-                    }
-                ],
-                contestInfo: {}
+                contestProblemList: [],
+                contestInfo: {},
+                status: contestStatus
             }
         },
         methods: {
             dateTime(mss) {
                 return MilltoHMS(mss)
             },
+            formatData(data) {
+                return formatDate(data)
+            },
             getContestInfo() {
                 this.$http.get(`/contest/${this.contestId}`)
                     .then(res => {
-                        console.log(res)
+                        if(res) {
+                            this.contestInfo = res.data;
+                            this.contestProblemList = res.data.problems;
+                            window.document.title = res.data.name;
+                        }
                     })
             }
         },
         created() {
-            // this.getContestInfo()
+            this.getContestInfo()
         }
     }
 </script>

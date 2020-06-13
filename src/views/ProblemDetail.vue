@@ -57,7 +57,8 @@
     export default {
         name: "ProblemDetail",
         props: {
-            id: String
+            id: String,
+            contestId: String
         },
         components: {
             ProblemCode
@@ -82,12 +83,23 @@
         },
         methods: {
             getProblemInfo() {
-                this.$http.get(`/problem/${this.id}`)
-                    .then(value => {
-                        this.problem = value.data
-                        // console.log(value.data)
-                        window.document.title = this.problem.title
-                    })
+                if(this.contestId) {
+                   this.$http.get(`/contest/problem?contestId=${this.contestId}&order=${this.id}`)
+                       .then(value => {
+                           if(value) {
+                               this.problem = value.data
+                               window.document.title = value.data.title
+                           }
+                       })
+                } else {
+                    this.$http.get(`/problem/${this.id}`)
+                        .then(value => {
+                            if(value) {
+                                this.problem = value.data
+                                window.document.title = value.data.title
+                            }
+                        })
+                }
             }
         },
         watch: {
