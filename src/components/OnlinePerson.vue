@@ -18,7 +18,7 @@
     position: fixed;
     width: 200px;
     height: 200px;
-    background-image: url("../assets/count.png");
+    background-image: url("../assets/image/count.png");
     background-size: contain;
     right: 30px;
     bottom: 30px;

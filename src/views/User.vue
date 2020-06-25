@@ -117,8 +117,8 @@
 
 <script>
     // import {mapGetters} from 'vuex'
-    import {rules} from '../assets/rules'
-    import {formatDate} from "@/assets/formatDate"
+    import {rules} from '../assets/config/rules'
+    import {formatDate} from "@/assets/config/formatDate"
     import LoginLog from "@/components/LoginLog"
     import StatusChart from "@/components/StatusChart"
 
@@ -201,18 +201,17 @@
                 const get = async () => {
                     const res = await this.$http.get(`/user/${this.getUsername}`)
                     // console.log(res)
-                    if (res.status !== 200) {
-                        return console.log("出现错误")
+                    if (res) {
+                        this.id = res.data.id
+                        this.createAt = formatDate(res.data.createAt)
+                        this.updateAt = formatDate(res.data.updateAt)
+                        this.infoForm.email = res.data.email
+                        this.infoForm.nickname = res.data.nickname
+                        // this.infoForm.password = res.data.password
+                        this.infoForm.school = res.data.school
+                        this.infoForm.username = res.data.username
+                        this.getJSON = res.data
                     }
-                    this.id = res.data.id
-                    this.createAt = formatDate(res.data.createAt)
-                    this.updateAt = formatDate(res.data.updateAt)
-                    this.infoForm.email = res.data.email
-                    this.infoForm.nickname = res.data.nickname
-                    // this.infoForm.password = res.data.password
-                    this.infoForm.school = res.data.school
-                    this.infoForm.username = res.data.username
-                    this.getJSON = res.data
                 }
                 get()
             },
@@ -225,14 +224,13 @@
                     const submit = async () => {
                         const url = '/user/' + this.id
                         const res = await this.$http.post(url, this.postForm)
-                        if (res.status !== 200) {
-                            console.log(res.errors)
+                        if (res) {
+                            this.changeEdit()
+                            this.infoForm.email = res.data.email
+                            this.infoForm.nickname = res.data.nickname
+                            this.infoForm.school = res.data.school
+                            this.$message.success("修改成功")
                         }
-                        this.changeEdit()
-                        this.infoForm.email = res.data.email
-                        this.infoForm.nickname = res.data.nickname
-                        this.infoForm.school = res.data.school
-                        this.$message.success("修改成功")
                     }
                     submit()
                 }
@@ -246,10 +244,12 @@
             loginLog() {
                 this.$http.get(`/user/loginLog/${this.id}?page=${this.logPage}&size=5`)
                     .then(res => {
-                        // 根据返回数据样式再修改
-                        this.logList.push(...res.data.content)
-                        if (res.data.content.length < 5) {
-                            this.hasLog = false
+                        if(res) {
+                            // 根据返回数据样式再修改
+                            this.logList.push(...res.data.content)
+                            if (res.data.content.length < 5) {
+                                this.hasLog = false
+                            }
                         }
                     })
 

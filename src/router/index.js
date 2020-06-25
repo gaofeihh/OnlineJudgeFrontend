@@ -101,6 +101,37 @@ const routes = [
 
     },
     {
+        path: "/admin",
+        name: "Admin",
+        component: () => import('../views/Admin'),
+        children: [
+            {
+                path: 'personCount',
+                name: 'PersonCount',
+                component: resolve => require(['@/components/Admin/AdminPersonCount'],resolve),
+                meta: {
+                    title: '在线用户'
+                },
+            },
+            {
+                path: 'uploadProblem',
+                name: 'UploadProblem',
+                component: resolve => require(['@/components/Admin/AdminUploadProblem'],resolve),
+                meta: {
+                    title: '上传题目'
+                },
+            },
+            {
+                path: 'createContest',
+                name: 'CreateContest',
+                component: resolve => require(['@/components/Admin/AdminCreateContest'],resolve),
+                meta: {
+                    title: '创建比赛'
+                },
+            },
+        ]
+    },
+    {
         path: '/contest-detail/:id',
         name: 'ContestDetail',
         component: () => import('../views/ContestDetail'),
@@ -114,7 +145,7 @@ const routes = [
         meta: {
             title: '404'
         }
-    }
+    },
 ]
 
 const router = new VueRouter({

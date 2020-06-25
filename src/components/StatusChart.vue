@@ -4,7 +4,7 @@
 </template>
 <script>
     import echarts from 'echarts'
-    import {statusDic} from '@/assets/dictionary'
+    import {statusDic} from '@/assets/config/dictionary'
 
     export default {
         name: 'StatusChart',

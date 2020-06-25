@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import {rules} from '../assets/rules'
+    import {rules} from '../assets/config/rules'
     export default {
         name: "Register",
         data() {

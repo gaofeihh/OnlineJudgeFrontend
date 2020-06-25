@@ -38,6 +38,7 @@
 <script>
     import {mapGetters} from 'vuex'
     import LoadingCartoon from "@/components/LoadingCartoon";
+    import {navCase} from "@/assets/config/caseConfig";
 
     export default {
         name: 'app',
@@ -45,38 +46,7 @@
         data() {
             return {
                 // isSelect: '/' + this.$route.name,
-                linkLists: [
-                    {
-                        id: 1,
-                        links: '/',
-                        show: '首页'
-                    },
-                    {
-                        id: 2,
-                        links: '/onlineJudge?page=1',
-                        show: '题库'
-                    },
-                    {
-                        id: 3,
-                        links: '/history',
-                        show: '历史成绩'
-                    },
-                    {
-                        id: 4,
-                        links: '/contest?page=1',
-                        show: '竞赛'
-                    },
-                    {
-                        id: 5,
-                        links: '/rankList?page=1',
-                        show: '排名'
-                    },
-                    {
-                        id: 6,
-                        links: '/about',
-                        show: 'ABOUT'
-                    },
-                ],
+                linkLists: navCase
             }
         },
         beforeCreate() {

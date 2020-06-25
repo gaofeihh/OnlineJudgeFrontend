@@ -2,7 +2,7 @@
     <div class="login-box">
         <!-- logo部分 -->
         <div class="avatar-box">
-            <img src="../assets/sdtbu.jpg" alt />
+            <img src="../assets/image/sdtbu.jpg" alt />
         </div>
         <!-- 登录表单 -->
         <v-form ref="loginFormRef" :model="loginForm" class="login-form" :rules="loginFormRules">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import {rules} from '../assets/rules'
+    import {rules} from '../assets/config/rules'
     export default {
         data() {
             // 数据绑定
@@ -60,26 +60,41 @@
                         const res = await this.$http.post("/auth/login", this.loginForm) // 添加接口地址
                         // 已经设置响应拦截，错误不会生效
                         // console.log(res)
-                        if (res.status !== 200) {
-                            // return that.$message.error("登陆失败")
-                            // return Message.error('登陆失败，请检查账号密码')
-                            return console.log(res.errors)
+                        if (res) {
+                            this.$message.success(`登陆成功`)
+                            if(this.loginForm.remember) {
+                                await this.rememberPassword()
+                            } else {
+                                window.localStorage.clear()
+                            }
+                            // 1 将登陆之后的token保存到客户端的sessionStorage中
+                            // token,保留登录状态
+                            window.sessionStorage.setItem("userId", res.data.id)
+                            window.sessionStorage.setItem("token", res.data.token)
+                            window.sessionStorage.setItem("username", res.data.username)
+                            await this.$store.dispatch('asyncChangeName')
+                            await this.$store.dispatch('asyncChangeId')
+                            // 2 通过编程式导航跳转到主页 /
+                            await this.$router.push('/');
                         }
-                        this.$message.success(`登陆成功`)
-                        // 1 将登陆之后的token保存到客户端的sessionStorage中
-                        // token,保留登录状态
-                        window.sessionStorage.setItem("userId", res.data.id)
-                        window.sessionStorage.setItem("token", res.data.token)
-                        window.sessionStorage.setItem("username", res.data.username)
-                        await this.$store.dispatch('asyncChangeName')
-                        await this.$store.dispatch('asyncChangeId')
-                        // 2 通过编程式导航跳转到主页 /
-                        await this.$router.push('/');
+
+
                     }
 
                 }
                 submit()
+            },
+            rememberPassword() {
+                window.localStorage.setItem('identify', this.loginForm.identify)
+                window.localStorage.setItem('password', this.loginForm.password)
             }
+        },
+        created() {
+            if(window.localStorage.getItem("identify") !== null) {
+                this.loginForm.identify = window.localStorage.getItem('identify');
+                this.loginForm.password = window.localStorage.getItem('password');
+            }
+
         }
     };
 </script>

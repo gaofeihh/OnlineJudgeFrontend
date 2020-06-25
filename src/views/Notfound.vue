@@ -1,6 +1,6 @@
 <template>
     <div id="notfound">
-        <img src="../assets/404.png"/>
+        <img src="../assets/image/404.png"/>
         <div class="btns">
             <router-link to="/">
                 <v-btn>返回首页</v-btn>

@@ -11,6 +11,7 @@ Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true //跨域
+// axios.defaults.baseURL = 'http://localhost:8080/api' // 打包时换成完整地址
 axios.defaults.baseURL = '/api'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 

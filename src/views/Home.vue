@@ -15,7 +15,10 @@ import OnlinePerson from "@/components/OnlinePerson";
         data() {
             return {
                 onlineCount: 0,
-                isDisplay: false
+                isDisplay: false,
+                polling: function () {
+
+                }
             }
         },
         computed: {
@@ -37,14 +40,21 @@ import OnlinePerson from "@/components/OnlinePerson";
             }
         },
         created() {
+            // 隐藏动画，开始轮询
             this.getOnlinePerson();
             const that = this;
-            setInterval(function() {
+            this.polling = setInterval(function() {
                 that.getOnlinePerson()
-            }, 20000);
+            }, 5000);
             setTimeout(function() {
                 that.displayCount()
             }, 1000)
+            document.getElementById("loading-cartoon").style.display = 'none';
+        },
+        destroyed() {
+            // 组件销毁显示动画，结束轮询
+            clearInterval(this.polling);
+            document.getElementById("loading-cartoon").style.display = 'block';
         }
     }
 </script>

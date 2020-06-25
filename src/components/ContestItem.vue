@@ -7,18 +7,18 @@
                         {{contestObj.name}}
 <!--                    </router-link>-->
                 </h2>
-                <v-icon v-if="contestObj.privilege === 'PROTECT'" small color="#409eff">fas fa-lock</v-icon>
+                <v-icon v-if="contestObj.privilege === 'PROTECT'" small color="#409eff">fa-lock</v-icon>
             </div>
             <div class="contest-info">
-                <v-icon small>fas fa-clock</v-icon>
+                <v-icon small>fa-clock</v-icon>
                 <span title="开始时间">{{format(contestObj.startAt)}}</span>
-                <v-icon small>fas fa-user</v-icon>
+                <v-icon small>fa-user</v-icon>
                 <span>201</span>
-                <v-icon small>fas fa-users</v-icon>
+                <v-icon small>fa-users</v-icon>
                 <span :title="'创办者：'+contestObj.owner">{{contestObj.owner}}</span>
-                <v-icon small>fas fa-hand-paper</v-icon>
+                <v-icon small>fa-hand-paper</v-icon>
                 <span>{{status[contestObj.privilege]}}</span>
-                <v-icon small>fas fa-info</v-icon>
+                <v-icon small>fa-info</v-icon>
                 <span>{{status[contestObj.status]}}</span>
             </div>
         </div>
@@ -44,8 +44,8 @@
 </template>
 
 <script>
-    import {formatDate} from "@/assets/formatDate";
-    import {contestStatus} from "@/assets/dictionary";
+    import {formatDate} from "@/assets/config/formatDate";
+    import {contestStatus} from "@/assets/config/dictionary";
 
     export default {
         name: "ContestItem",

@@ -2,20 +2,20 @@
     <div id="contest-detail">
         <h1>{{contestInfo.name}}</h1>
         <div class="contest-detail-about">
-            <v-icon>fas fa-calendar</v-icon>
-            <span v-cloak>{{formatData(contestInfo.startAt)}}</span>
-            <v-icon>fas fa-clock</v-icon>
-            <span v-cloak>{{dateTime(contestInfo.endBefore - contestInfo.startAt)}}</span>
-            <v-icon small>fas fa-users</v-icon>
+            <v-icon>fa-calendar</v-icon>
+            <span v-text="formatData(contestInfo.startAt)" />
+            <v-icon>fa-clock</v-icon>
+            <span v-text="dateTime(contestInfo.endBefore - contestInfo.startAt)" />
+            <v-icon small>fa-users</v-icon>
             <span>{{contestInfo.owner}}</span>
-            <v-icon small>fas fa-hand-paper</v-icon>
+            <v-icon small>fa-hand-paper</v-icon>
             <span>{{status[contestInfo.privilege]}}</span>
-            <v-icon small>fas fa-info</v-icon>
+            <v-icon small>fa-info</v-icon>
             <span>{{status[contestInfo.status]}}</span>
         </div>
         <div class="contest-problem-list">
             <div class="problem-list-h2">
-                <h2>问题列表</h2>
+                <h2>问题列表(AC/Submit)</h2>
             </div>
             <div class="problem-list-content">
                 <div class="problem-list-title" v-for="(item, index) in contestProblemList" :key="item.id">
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import {MilltoHMS, formatDate} from "@/assets/formatDate";
-    import {contestStatus} from "@/assets/dictionary";
+    import {MilltoHMS, formatDate} from "@/assets/config/formatDate";
+    import {contestStatus} from "@/assets/config/dictionary";
 
     export default {
         name: "ContestDetail",
