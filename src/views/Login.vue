@@ -72,8 +72,10 @@
                             window.sessionStorage.setItem("userId", res.data.id)
                             window.sessionStorage.setItem("token", res.data.token)
                             window.sessionStorage.setItem("username", res.data.username)
+                            window.sessionStorage.setItem("role", res.data.role)
                             await this.$store.dispatch('asyncChangeName')
                             await this.$store.dispatch('asyncChangeId')
+                            await this.$store.commit('auth/changeRole')
                             // 2 通过编程式导航跳转到主页 /
                             await this.$router.push('/');
                         }

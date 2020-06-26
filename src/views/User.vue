@@ -60,7 +60,7 @@
 
         <v-divider class="br"/>
 
-        <div class="log" v-show="isOwner">
+        <div class="log" v-show="isOwner || role === 'ADMIN'">
             <div class="log-text"><h2>最近登录</h2></div>
             <div class="log-component">
                 <login-log v-for="item in logList" :key="item.id" :log-item="item"/>
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-    // import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
     import {rules} from '../assets/config/rules'
     import {formatDate} from "@/assets/config/formatDate"
     import LoginLog from "@/components/LoginLog"
@@ -130,6 +130,12 @@
         },
         props: {
             getUsername: String
+        },
+        computed: {
+            ...mapGetters('auth', {role: 'getUserRole'})
+            // role() {
+            //     return window.sessionStorage.getItem('role')
+            // }
         },
         data() {
             return {

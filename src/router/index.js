@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -104,6 +105,12 @@ const routes = [
         path: "/admin",
         name: "Admin",
         component: () => import('../views/Admin'),
+        beforeEnter: (to, from, next) => {
+            if(store.getters['auth/getUserRole'] !== 'ADMIN') {
+                return next('/')
+            }
+            next()
+        },
         children: [
             {
                 path: 'personCount',
@@ -129,7 +136,7 @@ const routes = [
                     title: '创建比赛'
                 },
             },
-        ]
+        ],
     },
     {
         path: '/contest-detail/:id',
@@ -154,6 +161,7 @@ const router = new VueRouter({
 })
 
 // 跟随页面修改标题
+// todo:页面被拦截不修改标题
 router.beforeEach((to, from, next) => {
 
     if (to.meta.title) {

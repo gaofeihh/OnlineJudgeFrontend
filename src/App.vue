@@ -18,6 +18,7 @@
                         <router-link class="form-bg2" to="/register">注册</router-link>
                     </div>
                     <div v-else class="user">
+                        <router-link to="/admin" v-if="role === 'ADMIN'">管理面板</router-link>
                         <router-link :to="`/user/${this.getUsername}`">{{getUsername}}</router-link>
                     </div>
                 </div>
@@ -32,7 +33,9 @@
                 </transition>
             </v-app>
         </keep-alive>
+
     </div>
+
 </template>
 
 <script>
@@ -51,9 +54,11 @@
         },
         beforeCreate() {
             this.$store.dispatch('asyncChangeName')
+            this.$store.commit('auth/changeRole')
         },
         computed: {
-            ...mapGetters(['getUsername'])
+            ...mapGetters(['getUsername']),
+            ...mapGetters('auth', {role: 'getUserRole'})
         },
         methods: {},
 
@@ -204,6 +209,7 @@
 
                     a {
                         color: #409eff;
+                        margin-right: 30px;
                     }
                 }
             }

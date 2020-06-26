@@ -25,14 +25,15 @@
     import "monaco-editor/esm/vs/basic-languages/ruby/ruby.contribution";
     import "monaco-editor/esm/vs/basic-languages/python/python.contribution";
     import "monaco-editor/esm/vs/editor/contrib/find/findController.js";
+    import {languageList} from "@/assets/config/caseConfig";
 
     export default {
         name: 'ProblemCode',
         data() {
             return {
                 editor: null,
-                language: "C_11",
-                languagesList: ['C_11', 'C_98', 'JAVA_8', 'PYTHON_2', 'PYTHON_3'],
+                language: languageList[0],
+                languagesList: languageList,
                 width: "100%",
                 height: "100%"
             };
@@ -93,7 +94,7 @@
 
             .select {
                 width: 100px;
-                flex: 1;
+                flex: 2;
             }
 
             .space {
