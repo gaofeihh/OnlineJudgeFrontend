@@ -35,7 +35,8 @@
 </template>
 
 <script>
-    import {rules} from '../assets/config/rules'
+    import {rules} from '../assets/config/rules';
+    import {setStorage} from "@/assets/config/storage";
     export default {
         data() {
             // 数据绑定
@@ -69,15 +70,16 @@
                             }
                             // 1 将登陆之后的token保存到客户端的sessionStorage中
                             // token,保留登录状态
-                            window.sessionStorage.setItem("userId", res.data.id)
-                            window.sessionStorage.setItem("token", res.data.token)
-                            window.sessionStorage.setItem("username", res.data.username)
-                            window.sessionStorage.setItem("role", res.data.role)
+                            setStorage("userId", res.data.id)
+                            setStorage("token", res.data.token)
+                            setStorage("username", res.data.username)
+                            setStorage("role", res.data.role)
                             await this.$store.dispatch('asyncChangeName')
                             await this.$store.dispatch('asyncChangeId')
                             await this.$store.commit('auth/changeRole')
                             // 2 通过编程式导航跳转到主页 /
-                            await this.$router.push('/');
+                            // await this.$router.push('/');
+                            await this.$router.go(-1);
                         }
 
 

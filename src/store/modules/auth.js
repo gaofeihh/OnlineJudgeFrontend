@@ -1,10 +1,12 @@
+import {getStorage} from "@/assets/config/storage";
+
 const state = {
     role: 'STUDENT'
 }
 
 const mutations = {
     changeRole(state) {
-        state.role = window.sessionStorage.getItem('role')
+        state.role = getStorage('role')
     }
 }
 

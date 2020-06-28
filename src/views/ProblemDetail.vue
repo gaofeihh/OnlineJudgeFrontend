@@ -47,7 +47,8 @@
         </div>
         <div class="editor">
             <problem-code :user-id="parseInt(this.$store.getters.getUserId)"
-                  :question-id="parseInt(this.problem.problemId)"/>
+                          :question-id="parseInt(this.problem.problemId)"
+                          :contest-id="parseInt(this.contestId)"/>
         </div>
     </div>
 </template>

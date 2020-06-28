@@ -121,6 +121,7 @@
     import {formatDate} from "@/assets/config/formatDate"
     import LoginLog from "@/components/LoginLog"
     import StatusChart from "@/components/StatusChart"
+    import {getStorage,storageClear} from "@/assets/config/storage";
 
     export default {
         name: "User",
@@ -243,11 +244,14 @@
             },
             logout() {
                 this.$http.post('/auth/logout')
-                window.sessionStorage.clear()
+                storageClear()
                 this.$store.dispatch('asyncChangeName')
                 this.$router.push('/');
             },
             loginLog() {
+                if(!getStorage('userId')) {
+                    return
+                }
                 this.$http.get(`/user/loginLog/${this.id}?page=${this.logPage}&size=5`)
                     .then(res => {
                         if(res) {
