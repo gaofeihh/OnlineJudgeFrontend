@@ -65,7 +65,7 @@ axios.interceptors.response.use(response => {
                 break;
             default:
                 // router.go(-1)
-                Message.error(`错误${error.response.data.errors}`)
+                Message.error(`错误${error.response.data.error}`)
         }
     } else {
         Message.error('连接服务器失败')

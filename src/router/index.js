@@ -108,11 +108,11 @@ const routes = [
         component: () => import('../views/SubmitHistory'),
         props: (route) => ({
             page: parseInt(route.query.page),
-            user: route.query.user,
-            language: route.query.language,
-            problem: route.query.problem,
+            ownerId: route.query.ownerId,
+            lang: route.query.lang,
+            problemId: route.query.problemId,
             result: route.query.result,
-            similar: route.query.similar
+            similarPercent: route.query.similarPercent
         }),
         meta: {
             title: '提交记录'
@@ -120,15 +120,19 @@ const routes = [
     },
     {
         path: "/admin",
-        name: "Admin",
         component: () => import('../views/Admin'),
         beforeEnter: (to, from, next) => {
+            store.commit('auth/changeRole')
             if (store.getters['auth/getUserRole'] !== 'ADMIN') {
                 return next('/')
             }
             next()
         },
         children: [
+            {
+                path: '/',
+                redirect: 'personCount'
+            },
             {
                 path: 'personCount',
                 name: 'PersonCount',

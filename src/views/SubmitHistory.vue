@@ -2,7 +2,7 @@
     <div id="submit-history">
         <div class="filtrate">
             <div class="filtrate-item filtrate-per">
-                <v-select v-model="lang"
+                <v-select v-model="language"
                           :items="langList"
                           label="language"
                           outlined
@@ -18,7 +18,7 @@
 
             <div class="filtrate-item filtrate-text">
                 <v-text-field label="problemId"
-                              v-model="problemId"
+                              v-model="problem"
                               outlined
                               dense/>
             </div>
@@ -36,14 +36,14 @@
             <!--                              dense/>-->
             <!--            </div>-->
             <div class="filtrate-item filtrate-per" v-if="role === 'ADMIN'">
-                <v-select v-model="similarPercent"
+                <v-select v-model="similar"
                           :items="similarPercentList"
                           label="相似度"
                           outlined
                           dense/>
             </div>
             <div class="filtrate-btn">
-                <v-btn color="primary" @click="submit">查询</v-btn>
+                <v-btn color="primary" @click="getResultList">查询</v-btn>
             </div>
             <div class="switch filtrate-item">
                 <v-switch v-model="owner"
@@ -72,15 +72,17 @@
                         <span :style="{color: (item.result === 'ACCEPT' ? 'green' : 'red' )}">{{detailResult(item.result)}}</span>
                         <span v-if="item.similarAt">-
                             <router-link>{{item.similarAt}}
-                                <span v-if="item.similarPercent">({{item.similarPercent}})</span>
+                                <span v-if="item.similar">({{item.similar}})</span>
                             </router-link>
                         </span>
                     </td>
                     <td>{{item.memoryUsed}} <span style="color: #7093DB">kb</span></td>
                     <td>{{item.timeUsed}} <span style="color: #7093DB">ms</span></td>
                     <td>
-                        <router-link to="">{{item.lang}}</router-link>
-                        <span v-if="role === 'ADMIN'">/ <router-link to="">edit</router-link></span>
+                        <span v-if="role === 'ADMIN'">
+                            <router-link to="">{{item.lang}}</router-link> / <router-link to="">edit</router-link>
+                        </span>
+                        <span v-else>{{item.lang}}</span>
                     </td>
                     <td>{{item.codeLength}} <span style="color: #7093DB">B</span></td>
                     <td>{{dateFormat(item.createAt)}}</td>
@@ -111,12 +113,12 @@
             return {
                 owner: false,
                 userId: '',
-                problemId: '',
-                lang: 'all',
+                problem: '',
+                language: 'all',
                 langList: ['all', ...languageList],
                 // similar: '',
-                similarPercent: 'all',
-                similarPercentList: ['all', 50, 60, 70, 80, 90, 100],
+                similar: 'all',
+                similarPercentList: ['all', '50', '60', '70', '80', '90', '100'],
                 resultStatus: 'all',
                 resultStatusList: ['all', 'REJUDGE_PENDING', 'PENDING', 'PREPARING', 'COMPILING', 'RUNNING',
                     'ACCEPT', 'PRESENTATION_ERROR', 'WRONG_ANSWER', 'TIME_LIMIT_EXCEED', 'MEMORY_LIMIT_EXCEED',
@@ -131,11 +133,11 @@
         },
         props: {
             page: Number,
-            // user: String,
-            // language: String,
-            // problem: String,
-            // result: String,
-            // similar: String
+            ownerId: String,
+            lang: String,
+            problemId: String,
+            result: String,
+            similarPercent: String
         },
         watch: {
             page() {
@@ -162,8 +164,52 @@
                 } else {
                     this.userId = ''
                 }
+            },
+            ownerId() {
+                if (this.ownerId !== this.userId) {
+                    this.owner = false;
+                    this.userId = this.ownerId;
+                }
+            },
+            userId() {
                 this.getResultList()
-            }
+            },
+            lang() {
+                if(this.lang) {
+                    this.language = this.lang;
+                } else {
+                    this.language = 'all'
+                }
+            },
+            language() {
+                this.getResultList()
+            },
+            result() {
+                if(this.result) {
+                    this.resultStatus = this.result
+                } else {
+                    this.resultStatus = 'all'
+                }
+            },
+            resultStatus() {
+                this.getResultList()
+            },
+            similarPercent() {
+                if(this.similarPercent) {
+                    this.similar = this.similarPercent
+                } else {
+                    this.similar = 'all'
+                }
+            },
+            similar() {
+                this.getResultList()
+            },
+            problemId() {
+                this.problem = this.problemId
+            },
+            // problem() {
+            //     this.getResultList()
+            // }
         },
         computed: {
             ...mapGetters('auth', {role: "getUserRole"}),
@@ -176,13 +222,18 @@
             // }
         },
         methods: {
+            getUrl() {
+                let url = this.userId ? `&ownerId=${this.userId}` : '';
+                url += this.problem ? `&problemId=${this.problem}` : '';
+                url += this.language === 'all' ? '' : `&lang=${this.language}`;
+                url += this.resultStatus === 'all' ? '' : `&result=${this.resultStatus}`;
+                url += this.similar === 'all' ? '' : `&similarPercent=${this.similar}`;
+                return url;
+            },
             getResultList() {
-                let url = this.userId ? `&ownerId=${this.userId}` : ''
-                url += this.problemId ? `&problemId=${this.problemId}` : ''
-                url += this.lang === 'all' ? '' : `&lang=${this.lang}`
-                url += this.resultStatus === 'all' ? '' : `&result=${this.resultStatus}`
-                url += this.similarPercent === 'all' ? '' : `&similarPercent=${this.similarPercent}`
+                const url = this.getUrl();
                 // console.log(`/solution?page=${this.historyPageNumber - 1}&size=${this.historyPageSize}${url}`)
+                this.$router.push(`/history?page=${this.historyPageNumber}${url}`);
                 this.$http.get(`/solution?page=${this.historyPageNumber - 1}&size=${this.historyPageSize}${url}`,)
                     .then(res => {
                         if (res) {
@@ -190,9 +241,7 @@
                             this.historyTotalPage = res.data.totalPages
                         }
                     })
-            },
-            submit() {
-                this.getResultList()
+
             },
             detailResult(result) {
                 // 根据不同结果处理
@@ -201,7 +250,7 @@
             },
             dateFormat(date) {
                 return formatDate(date)
-            }
+            },
         },
         created() {
             this.getResultList()
