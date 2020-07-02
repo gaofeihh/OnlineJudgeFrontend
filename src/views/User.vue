@@ -70,12 +70,14 @@
             <div v-else class="log-btn-err">没有更多了...</div>
         </div>
 
+        <router-link to="" v-if="isOwner">
+            <div class="re-password" title="修改密码" @click="rePasswordCard = true">修改<br/>密码</div>
+        </router-link>
+
         <v-dialog v-model="rePasswordCard" persistent width="800px">
-            <template v-slot:activator="{ on }">
-                <router-link to="">
-                    <div class="re-password" v-on="on" title="修改密码" @click="rePassword = true">修改<br/>密码</div>
-                </router-link>
-            </template>
+<!--            <template v-slot:activator="{ on }">-->
+<!--                可以使用v-on="on"属性添加启动器-->
+<!--            </template>-->
             <v-card>
                 <v-card-title class="headline">修改密码</v-card-title>
                 <v-card-text>
@@ -121,6 +123,7 @@
     import {formatDate} from "@/assets/config/formatDate"
     import LoginLog from "@/components/LoginLog"
     import StatusChart from "@/components/StatusChart"
+    import {getStorage,storageClear} from "@/assets/config/storage";
 
     export default {
         name: "User",
@@ -243,11 +246,16 @@
             },
             logout() {
                 this.$http.post('/auth/logout')
-                window.sessionStorage.clear()
+                storageClear()
                 this.$store.dispatch('asyncChangeName')
+                this.$store.dispatch('asyncChangeId')
+                this.$store.commit('auth/changeRole')
                 this.$router.push('/');
             },
             loginLog() {
+                if(!getStorage('userId')) {
+                    return
+                }
                 this.$http.get(`/user/loginLog/${this.id}?page=${this.logPage}&size=5`)
                     .then(res => {
                         if(res) {
@@ -437,9 +445,9 @@
 
         .re-password {
             position: fixed;
-            background-color: #fd928b;
-            color: #d13b57;
-            box-shadow: 0 0 10px #c5c5c5;
+            background-color: #66a6ff;
+            color: #fff3e0;
+            box-shadow: 0 0 10px #ace0f9;
             height: 50px;
             width: 50px;
             text-align: center;

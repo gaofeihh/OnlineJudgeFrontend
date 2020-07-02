@@ -78,6 +78,7 @@
         height: 100%;
         width: 100%;
         display: flex;
+        position: relative;
 
         .admin-menu {
             height: 100%;
@@ -89,8 +90,30 @@
         }
 
         .admin-view {
+            position: absolute;
+            left: 20%;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
             padding: 20px;
-            width: 80%;
+
+        }
+    }
+    @media screen and (max-width: 780px) {
+        #admin {
+            .admin-menu {
+                display: none;
+            }
+
+            .admin-view {
+                display: none;
+            }
+
+        }
+        #admin::after {
+            content: "分辨率低，请用电脑打开";
+            margin: 80px auto 0 auto;
         }
     }
 </style>

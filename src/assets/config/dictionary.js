@@ -1,4 +1,9 @@
 const statusDic = {
+    "REJUDGE_PENDING": "等待重新判断",
+    "PENDING": "等待中",
+    "PREPARING": "准备中",
+    "COMPILING": "编译中",
+    "RUNNING": "运行中",
     "ACCEPT": "通过",
     "PRESENTATION_ERROR": "格式错误",
     "WRONG_ANSWER": "答案错误",
@@ -24,7 +29,28 @@ const contestStatus = {
     "REJECTED": "被拒绝"
 };
 
+const runResult = {
+    "REJUDGE_PENDING": "-5",
+    "PENDING": "-4",
+    "PREPARING": "-3",
+    "COMPILING": "-2",
+    "RUNNING": "-1",
+
+    "ACCEPT": "0",
+
+    "PRESENTATION_ERROR": "1",
+    "WRONG_ANSWER": "2",
+    "TIME_LIMIT_EXCEED": "3",
+    "MEMORY_LIMIT_EXCEED": "4",
+    "OUTPUT_LIMIT_EXCEED": "5",
+    "RUNTIME_ERROR": "6",
+    "COMPILE_ERROR": "7",
+    "SYSTEM_ERROR": "8",
+    "FAILED_OTHER": "9"
+}
+
 module.exports = {
     statusDic,
-    contestStatus
+    contestStatus,
+    runResult
 }

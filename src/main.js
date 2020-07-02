@@ -5,9 +5,12 @@ import store from './store'
 import axios from 'axios'
 import vuetify from './plugins/vuetify'
 import Message from './components/Message/index.js'
+import md5 from 'js-md5'
 
 // 消息提示
 Vue.prototype.$message = Message
+// md5加密
+Vue.prototype.$md5 = md5
 
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true //跨域
@@ -34,9 +37,9 @@ axios.interceptors.response.use(response => {
     if (error.response.status) {
         switch (error.response.status) {
             case 403:
-                window.sessionStorage.clear();
-                router.push('/login');
-                Message.error('身份过期请登录');
+                // window.sessionStorage.clear();
+                // router.push('/login');
+                Message.error(`403:${error.response.data.errors}`);
                 break;
             case 401:
                 Message.error(`拒绝访问,未获取相关权限,${error.response.data.errors}`);
@@ -62,7 +65,7 @@ axios.interceptors.response.use(response => {
                 break;
             default:
                 // router.go(-1)
-                Message.error(`错误${error.response.data.errors}`)
+                Message.error(`错误${error.response.data.error}`)
         }
     } else {
         Message.error('连接服务器失败')

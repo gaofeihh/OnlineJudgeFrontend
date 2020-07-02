@@ -14,9 +14,9 @@ export function formatDate(date, rule = 1) {
  * @return {string}
  */
 export function MilltoHMS(mss) {
-        const hours = parseInt(mss)/ (1000 * 60 * 60);
-        const minutes = (parseInt(mss) % (1000 * 60 * 60) / (1000 * 60));
-        const seconds = (parseInt(mss) % (1000 * 60)) / 1000;
+        const hours = parseInt(mss/ (1000 * 60 * 60));
+        const minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = (mss % (1000 * 60)) / 1000;
         const strDate = pad(hours, 2) + "时 " + pad(minutes, 2) + "分 " + pad(seconds, 2) + "秒";
         return strDate;
 }

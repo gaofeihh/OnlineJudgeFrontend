@@ -22,9 +22,9 @@ import OnlinePerson from "@/components/OnlinePerson";
             }
         },
         computed: {
-            getSession() {
-                return !!window.sessionStorage.getItem('token');
-            }
+            // getSession() {
+            //     return !!window.sessionStorage.getItem('token');
+            // }
         },
         methods: {
             getOnlinePerson() {
