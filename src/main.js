@@ -9,7 +9,7 @@ import md5 from 'js-md5'
 
 // 消息提示
 Vue.prototype.$message = Message
-// md5加密
+// md5
 Vue.prototype.$md5 = md5
 
 Vue.config.productionTip = false

@@ -1,4 +1,4 @@
-const rules = {
+export const rules = {
     loginFormRules: {
         identify: [
             value => !!value || '不能为空！',
@@ -69,6 +69,34 @@ const rules = {
             value => (value || '').length <= 20 || '不能高于20位',
             value => (value || '').length >= 7 || '不能低于7位'
         ]
+    },
+    uploadProblemRules: {
+        memoryRule: [
+            value => !!value || '不能为空！',
+        ],
+        timeRule: [
+            value => !!value || '不能为空！',
+        ],
+        titleRule: [
+            value => !!value || '不能为空！',
+        ],
+        descriptionRule: [
+            value => !!value || '不能为空！',
+        ],
+        inputRule: [
+            value => !!value || '不能为空！',
+        ],
+        outputRule: [
+            value => !!value || '不能为空！',
+        ],
+        sampleRule: [
+            value => !!value || '不能为空！',
+        ],
+        hintRule: [
+            value => !!value || '不能为空！',
+        ],
+        sourceRule: [
+            value => !!value || '不能为空！',
+        ],
     }
 }
-export {rules}

@@ -1,6 +1,11 @@
 <template>
     <div id="rank-list">
         <div class="rank-table">
+            <div class="rank-select">
+                <v-select
+                        :items="rankTypeList"
+                        v-model="rankType"/>
+            </div>
             <table>
                 <thead>
                 <tr>
@@ -43,6 +48,7 @@
 </template>
 
 <script>
+    import {rankListType} from "@/assets/config/dictionary";
     export default {
         name: "RankList",
         props: {
@@ -56,6 +62,9 @@
                 totalPage: 0,
                 number: 0,
                 size: 50,
+                rankTypeList: ['总榜', '月榜', '周榜', '日榜'],
+                rankType: '总榜',
+                rank: 'OVERALL'
             }
         },
         computed: {
@@ -65,9 +74,10 @@
         },
         methods: {
             getRankList() {
-                this.$http.get(`/user/rank?page=${this.rankPage - 1}&size=${this.rankSize}`)
+                console.log(1)
+                this.$http.get(`/user/rank?page=${this.rankPage - 1}&size=${this.rankSize}&type=${this.rank}`)
                     .then(res => {
-                        if(res) {
+                        if (res) {
                             this.rankData = res.data.content
                             this.totalPage = res.data.totalPages
                             this.number = res.data.number
@@ -88,7 +98,7 @@
                 //     this.rankPage =1
                 //     this.getRankList()
                 // } else {
-                    this.rankPage = this.page
+                this.rankPage = this.page
 
                 // }
             },
@@ -99,6 +109,15 @@
                     this.$router.push(`/rankList?page=${this.rankPage}`)
                 }
                 this.getRankList()
+            },
+            rankType() {
+                this.rank = rankListType[this.rankType]
+                if(this.rankPage !== 1) {
+                    this.rankPage = 1
+                }else {
+                    this.getRankList()
+                }
+
             }
         }
     }
@@ -108,6 +127,12 @@
     #rank-list {
         margin: 100px auto 50px auto;
         width: 100%;
+        position: relative;
+
+        .rank-select {
+            width: 20%;
+            float: right;
+        }
 
         .rank-table {
             width: 70%;
@@ -145,9 +170,9 @@
                     text-overflow: ellipsis;
                 }
 
-                td:nth-of-type(2) {
-                    width: 15%;
-                }
+                /*td:nth-of-type(2) {*/
+                /*    width: 15%;*/
+                /*}*/
 
                 td:nth-of-type(4) {
                     width: 10%;
@@ -157,9 +182,9 @@
                     width: 10%;
                 }
 
-                td:nth-of-type(6) {
-                    width: 10%;
-                }
+                /*td:nth-of-type(6) {*/
+                /*    width: 10%;*/
+                /*}*/
 
                 tr:last-child {
                     border-bottom: solid 1px #dddddd;
@@ -213,6 +238,11 @@
         @media screen and (max-width: 780px) {
             .rank-table {
                 width: 90%;
+
+                .rank-select {
+                    width: 100%;
+                    /*float: right;*/
+                }
 
                 table {
                     td:nth-of-type(1) {

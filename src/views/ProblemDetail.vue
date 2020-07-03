@@ -20,29 +20,33 @@
             </div>
             <div class="description">
                 <h2>题目描述</h2>
-                {{problem.description}}
+                <p v-html="problem.description" />
             </div>
 
             <div class="tips">
                 <div class="input">
                     <h2>输入描述</h2>
-                    {{problem.input}}
+                    <p v-html="problem.input" />
+<!--                    {{problem.input}}-->
                 </div>
 
                 <div class="output">
                     <h2>输出描述</h2>
-                    {{problem.output}}
+                    <p v-html="problem.output" />
+<!--                    {{problem.output}}-->
                 </div>
 
                 <div class="hint">
                     <h2>提示</h2>
-                    {{problem.hint}}
+                    <p v-html="problem.hint" />
+<!--                    {{problem.hint}}-->
                 </div>
             </div>
 
             <div class="sample">
                 <h2>样例</h2>
-                {{problem.sample}}
+                <p v-html="problem.sample" />
+<!--                {{problem.sample}}-->
             </div>
         </div>
         <div class="editor">

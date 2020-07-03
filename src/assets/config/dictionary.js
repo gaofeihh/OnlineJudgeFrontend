@@ -48,9 +48,29 @@ const runResult = {
     "SYSTEM_ERROR": "8",
     "FAILED_OTHER": "9"
 }
+const rankListType = {
+    "总榜": "OVERALL",
+    "月榜": "MONTHLY",
+    "周榜": "WEEKLY",
+    "日榜": "DAILY"
+}
+const unStatusDic = {
+    "通过": 'ACCEPT',
+    "格式错误": 'PRESENTATION_ERROR',
+    "答案错误": 'WRONG_ANSWER',
+    "时间超限": 'TIME_LIMIT_EXCEED',
+    "内存超限": 'MEMORY_LIMIT_EXCEED',
+    "输出超限": 'OUTPUT_LIMIT_EXCEED',
+    "运行错误": 'RUNTIME_ERROR',
+    "编译错误": 'COMPILE_ERROR',
+    "系统错误": 'SYSTEM_ERROR',
+    "其他错误": 'FAILED_OTHER'
+}
 
 module.exports = {
     statusDic,
     contestStatus,
-    runResult
+    runResult,
+    rankListType,
+    unStatusDic
 }

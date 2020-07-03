@@ -22,7 +22,7 @@
                               outlined
                               dense/>
             </div>
-            <div class="filtrate-item">
+            <div class="filtrate-item filtrate-text">
                 <v-select v-model="resultStatus"
                           :items="resultStatusList"
                           label="结果"
@@ -35,7 +35,7 @@
             <!--                              outlined-->
             <!--                              dense/>-->
             <!--            </div>-->
-            <div class="filtrate-item filtrate-per" v-if="role === 'ADMIN'">
+            <div class="filtrate-item filtrate-text" v-if="role === 'ADMIN'">
                 <v-select v-model="similar"
                           :items="similarPercentList"
                           label="相似度"
@@ -102,7 +102,7 @@
 
 <script>
     import {formatDate} from "@/assets/config/formatDate";
-    import {statusDic} from "@/assets/config/dictionary";
+    import {statusDic, unStatusDic} from "@/assets/config/dictionary";
     import {languageList} from "@/assets/config/caseConfig";
     import {getStorage} from "@/assets/config/storage";
     import {mapGetters} from "vuex"
@@ -120,9 +120,8 @@
                 similar: 'all',
                 similarPercentList: ['all', '50', '60', '70', '80', '90', '100'],
                 resultStatus: 'all',
-                resultStatusList: ['all', 'REJUDGE_PENDING', 'PENDING', 'PREPARING', 'COMPILING', 'RUNNING',
-                    'ACCEPT', 'PRESENTATION_ERROR', 'WRONG_ANSWER', 'TIME_LIMIT_EXCEED', 'MEMORY_LIMIT_EXCEED',
-                    'OUTPUT_LIMIT_EXCEED', 'RUNTIME_ERROR', 'COMPILE_ERROR', 'SYSTEM_ERROR', 'FAILED_OTHER'],
+                resultStatusList: ['all', "通过", "格式错误", "答案错误", "时间超限", "内存超限", "输出超限",
+                    "运行错误", "编译错误", "系统错误", "其他错误"],
                 thead: ['RunId', 'User', 'Problem', 'Result', 'Memory',
                     'Time', 'Language', 'Code Length', 'Submit Time'],
                 resultList: [],
@@ -162,20 +161,21 @@
                     }
 
                 } else {
-                    this.userId = ''
+                    // this.userId = ''
                 }
+                // this.getResultList()
             },
             ownerId() {
-                if (this.ownerId !== this.userId) {
-                    this.owner = false;
-                    this.userId = this.ownerId;
-                }
+                this.userId = this.ownerId;
             },
             userId() {
+                if (getStorage('userId') !== this.userId) {
+                    this.owner = false;
+                }
                 this.getResultList()
             },
             lang() {
-                if(this.lang) {
+                if (this.lang) {
                     this.language = this.lang;
                 } else {
                     this.language = 'all'
@@ -185,8 +185,8 @@
                 this.getResultList()
             },
             result() {
-                if(this.result) {
-                    this.resultStatus = this.result
+                if (this.result) {
+                    this.resultStatus = statusDic[this.result]
                 } else {
                     this.resultStatus = 'all'
                 }
@@ -195,7 +195,7 @@
                 this.getResultList()
             },
             similarPercent() {
-                if(this.similarPercent) {
+                if (this.similarPercent) {
                     this.similar = this.similarPercent
                 } else {
                     this.similar = 'all'
@@ -226,7 +226,7 @@
                 let url = this.userId ? `&ownerId=${this.userId}` : '';
                 url += this.problem ? `&problemId=${this.problem}` : '';
                 url += this.language === 'all' ? '' : `&lang=${this.language}`;
-                url += this.resultStatus === 'all' ? '' : `&result=${this.resultStatus}`;
+                url += this.resultStatus === 'all' ? '' : `&result=${unStatusDic[this.resultStatus]}`;
                 url += this.similar === 'all' ? '' : `&similarPercent=${this.similar}`;
                 return url;
             },
@@ -291,9 +291,9 @@
                 max-width: 8%;
             }
 
-            .filtrate-per {
-                max-width: 10%;
-            }
+            /*.filtrate-per {*/
+            /*    max-width: 10%;*/
+            /*}*/
         }
 
         .history-view {
