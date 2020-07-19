@@ -120,7 +120,7 @@
 <script>
     import {mapGetters} from 'vuex'
     import {rules} from '../assets/config/rules'
-    import {formatDate} from "@/assets/config/formatDate"
+    import {formatDate} from "@/assets/script/formatDate"
     import LoginLog from "@/components/LoginLog"
     import StatusChart from "@/components/StatusChart"
     import {getStorage,storageClear} from "@/assets/config/storage";

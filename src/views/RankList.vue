@@ -62,7 +62,7 @@
                 totalPage: 0,
                 number: 0,
                 size: 50,
-                rankTypeList: ['总榜', '月榜', '周榜', '日榜'],
+                rankTypeList: ['总榜', '月榜(近30天)', '周榜(近7天)', '日榜'],
                 rankType: '总榜',
                 rank: 'OVERALL'
             }
@@ -74,7 +74,6 @@
         },
         methods: {
             getRankList() {
-                console.log(1)
                 this.$http.get(`/user/rank?page=${this.rankPage - 1}&size=${this.rankSize}&type=${this.rank}`)
                     .then(res => {
                         if (res) {

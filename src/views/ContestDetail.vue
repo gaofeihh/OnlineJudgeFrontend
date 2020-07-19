@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {MilltoHMS, formatDate} from "@/assets/config/formatDate";
+    import {MilltoHMS, formatDate} from "@/assets/script/formatDate";
     import {contestStatus} from "@/assets/config/dictionary";
 
     export default {

@@ -6,7 +6,7 @@
                     <div>
                         <v-switch
                                 v-model="problem.hide"
-                                label="提示"
+                                label="隐藏"
                         />
                     </div>
 
@@ -48,9 +48,10 @@
 
                 <div id="upload-problem-context">
                     <div>
-                        <!--                    <h2>题目</h2>:rules="rule.titleRule"-->
+                        <!--                    <h2>题目</h2>-->
                         <v-text-field
                                 v-model="problem.title"
+                                :rules="rule.titleRule"
                                 label="标题"
                                 dense
                                 outlined
@@ -99,6 +100,7 @@
                         <div class="outin-style">
                             <v-textarea
                                     v-model="item.inputSample"
+                                    :rules="rule.sampleRule"
                                     dense
                                     outlined
                                     clearable
@@ -108,6 +110,7 @@
                         <div class="outin-style">
                             <v-textarea
                                     v-model="item.outputSample"
+                                    :rules="rule.sampleRule"
                                     dense
                                     outlined
                                     clearable
@@ -190,6 +193,7 @@
         },
         methods: {
             upload() {
+                console.log('update')
                 // 验证
                 const isSpace = this.$refs.uploadProblemRef.validate()
                 if (!isSpace) {
@@ -201,34 +205,23 @@
                 this.problem.output = this.$refs.outputRef.getContent()
                 // this.problem.sample = this.$refs.sampleRef.getContent()
                 this.problem.hint = this.$refs.hintRef.getContent()
-                if (!(this.problem.description && this.problem.input && this.problem.output
-                    && this.problem.sample && this.problem.hint)) {
-                    alert('输入信息不全，请检查')
+                if (!(this.problem.description && this.problem.sample)) {
+                    alert('输入信息不全，描述和样例不能为空,请检查')
                     return;
                 }
+                // 过滤problem对象
+                const newObj = this.filterParams();
+
+                // sample转换字符串
+                newObj.sample = JSON.stringify(newObj.sample)
+                console.log(newObj.sample)
+
                 // 上传
-                this.$http.put(`/admin/problem`, this.problem).then(res => {
+                this.$http.put(`/admin/problem`, newObj).then(res => {
                     if (res) {
                         this.$message.success(`上传成功`)
                         //初始化界面数据
-                        this.problem = {
-                            description: "",
-                            hide: false,
-                            hint: "",
-                            input: "",
-                            memoryLimit: 512,
-                            output: "",
-                            sample: [{
-                                inputSample: '',
-                                outputSample: ''
-                            }],
-                            source: "",
-                            specialJudge: false,
-                            timeLimit: 1000,
-                            title: "",
-                            type: "NORMAL"
-                        }
-
+                        this.$router.go(0)
                     }
                 })
             },
@@ -244,6 +237,15 @@
                     return
                 }
                 this.problem.sample.pop()
+            },
+            filterParams() {
+                let newProblem = {};
+                for(let i in this.problem) {
+                    if(this.problem[i]) {
+                        newProblem[i] = this.problem[i]
+                    }
+                }
+                return newProblem;
             }
         },
         created() {

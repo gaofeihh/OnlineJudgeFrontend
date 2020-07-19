@@ -18,8 +18,8 @@
 </template>
 
 <script>
-    import {formatDate} from "@/assets/config/formatDate";
-    import {MilltoHMS} from "../assets/config/formatDate";
+    import {formatDate} from "@/assets/script/formatDate";
+    import {MilltoHMS} from "../assets/script/formatDate";
 
     export default {
         name: "LoginLog",

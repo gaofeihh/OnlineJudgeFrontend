@@ -50,8 +50,8 @@ const runResult = {
 }
 const rankListType = {
     "总榜": "OVERALL",
-    "月榜": "MONTHLY",
-    "周榜": "WEEKLY",
+    "月榜(近30天)": "MONTHLY",
+    "周榜(近7天)": "WEEKLY",
     "日榜": "DAILY"
 }
 const unStatusDic = {

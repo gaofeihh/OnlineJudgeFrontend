@@ -101,7 +101,7 @@
 </template>
 
 <script>
-    import {formatDate} from "@/assets/config/formatDate";
+    import {formatDate} from "@/assets/script/formatDate";
     import {statusDic, unStatusDic} from "@/assets/config/dictionary";
     import {languageList} from "@/assets/config/caseConfig";
     import {getStorage} from "@/assets/config/storage";

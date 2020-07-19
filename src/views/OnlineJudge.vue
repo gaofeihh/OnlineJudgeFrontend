@@ -57,7 +57,7 @@
 </template>
 
 <script>
-    import {formatDate} from '@/assets/config/formatDate'
+    import {formatDate} from '@/assets/script/formatDate'
 
     export default {
         name: "OnlineJudge",

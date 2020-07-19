@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import {formatDate} from "@/assets/config/formatDate";
+    import {formatDate} from "@/assets/script/formatDate";
     import {contestStatus} from "@/assets/config/dictionary";
 
     export default {

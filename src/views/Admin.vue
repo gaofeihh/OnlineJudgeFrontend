@@ -48,7 +48,9 @@
                         label="主题"/>
             </v-navigation-drawer>
         </v-card>
-        <router-view class="admin-view"/>
+        <transition  name="admin-fade">
+            <router-view class="admin-view"/>
+        </transition>
     </div>
 </template>
 
@@ -73,6 +75,19 @@
 </script>
 
 <style lang="less" scoped>
+    .admin-fade-enter-active {
+        transition: all .6s ease;
+    }
+    .admin-fade-leave-active {
+        transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .admin-fade-enter{
+        transform: translateX(15px);
+        opacity: 0;
+    }
+    .admin-fade-leave-to {
+        transition: all 0s ease;
+    }
     #admin {
         margin: 60px auto 0 auto;
         height: 100%;
