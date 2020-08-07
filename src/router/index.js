@@ -18,7 +18,7 @@ const routes = [
         path: '/onlineJudge',
         name: 'OnlineJudge',
         component: () => import('../views/OnlineJudge'),
-        props: (route) => ({page: parseInt(route.query.page)}),
+        // props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
             title: '题库',
             keepAlive: true
@@ -45,18 +45,20 @@ const routes = [
         path: '/contest',
         name: 'Contest',
         component: () => import('../views/Contest'),
-        props: (route) => ({page: parseInt(route.query.page)}),
+        // props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
-            title: '竞赛'
+            title: '竞赛',
+            keepAlive: true
         }
     },
     {
         path: '/rankList',
         name: 'RankList',
         component: () => import('../views/RankList'),
-        props: (route) => ({page: parseInt(route.query.page)}),
+        // props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
-            title: '排名'
+            title: '排名',
+            keepAlive: true
         }
     },
     {
@@ -107,16 +109,17 @@ const routes = [
         path: '/history',
         name: 'History',
         component: () => import('../views/SubmitHistory'),
-        props: (route) => ({
-            page: parseInt(route.query.page),
-            ownerId: route.query.ownerId,
-            lang: route.query.lang,
-            problemId: route.query.problemId,
-            result: route.query.result,
-            similarPercent: route.query.similarPercent
-        }),
+        // props: (route) => ({
+        //     page: parseInt(route.query.page),
+        //     ownerId: route.query.ownerId,
+        //     lang: route.query.lang,
+        //     problemId: route.query.problemId,
+        //     result: route.query.result,
+        //     similarPercent: route.query.similarPercent
+        // }),
         meta: {
-            title: '提交记录'
+            title: '提交记录',
+            keepAlive: true
         }
     },
     {
@@ -169,7 +172,10 @@ const routes = [
         path: '/contest-detail/:id',
         name: 'ContestDetail',
         component: () => import('../views/ContestDetail'),
-        props: (route) => ({contestId: route.params.id})
+        props: (route) => ({contestId: route.params.id}),
+        meta: {
+            keepAlive: true
+        }
     },
     // 捕获非法路径
     {

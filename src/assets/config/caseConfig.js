@@ -3,9 +3,9 @@ export const navCase =
     [
         {id: 1, links: '/', show: '首页'},
         {id: 2, links: '/onlineJudge', show: '题库'},
-        {id: 3, links: '/history?page=1', show: '提交记录'},
-        {id: 4, links: '/contest?page=1', show: '竞赛'},
-        {id: 5, links: '/rankList?page=1', show: '排名'},
+        {id: 3, links: '/history', show: '提交记录'},
+        {id: 4, links: '/contest', show: '竞赛'},
+        {id: 5, links: '/rankList', show: '排名'},
         {id: 6, links: '/about', show: 'ABOUT'}
     ];
 

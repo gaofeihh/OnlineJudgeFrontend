@@ -80,7 +80,7 @@
             getList() {
                 this.$http.get(`/problems?page=${this.pageNumber - 1}&size=${this.pageSize}`)
                     .then(value => {
-                        if(value) {
+                        if (value) {
                             this.problemList = value.data.content
                             this.totalPage = value.data.totalPages
                             // console.log(1)
@@ -118,6 +118,15 @@
                 //     this.$router.push(`/onlineJudge?page=${this.pageNumber}`)
                 // }
                 this.getList()
+            }
+        },
+        beforeRouteLeave(to, from, next) {
+            if (to.name !== 'Problem') {
+                this.$route.meta.keepAlive = false
+                next()
+            } else {
+                this.$route.meta.keepAlive = true
+                next()
             }
         }
     }

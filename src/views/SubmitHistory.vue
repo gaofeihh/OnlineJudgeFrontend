@@ -130,24 +130,24 @@
                 historyTotalPage: 1
             }
         },
-        props: {
-            page: Number,
-            ownerId: String,
-            lang: String,
-            problemId: String,
-            result: String,
-            similarPercent: String
-        },
+        // props: {
+        //     page: Number,
+        //     ownerId: String,
+        //     lang: String,
+        //     problemId: String,
+        //     result: String,
+        //     similarPercent: String
+        // },
         watch: {
-            page() {
-                this.historyPageNumber = this.page
-            },
+            // page() {
+            //     this.historyPageNumber = this.page
+            // },
             historyPageNumber() {
-                if (this.historyPageNumber < 1 || this.historyPageNumber > this.historyTotalPage) {
-                    this.$router.push("/history?page=1")
-                } else {
-                    this.$router.push(`/history?page=${this.historyPageNumber}`)
-                }
+                // if (this.historyPageNumber < 1 || this.historyPageNumber > this.historyTotalPage) {
+                //     this.$router.push("/history?page=1")
+                // } else {
+                //     this.$router.push(`/history?page=${this.historyPageNumber}`)
+                // }
                 this.getResultList()
             },
             owner() {
@@ -161,52 +161,52 @@
                     }
 
                 } else {
-                    // this.userId = ''
+                    this.userId = ''
                 }
                 // this.getResultList()
             },
-            ownerId() {
-                this.userId = this.ownerId;
-            },
+            // ownerId() {
+            //     this.userId = this.ownerId;
+            // },
             userId() {
                 if (getStorage('userId') !== this.userId) {
                     this.owner = false;
                 }
                 this.getResultList()
             },
-            lang() {
-                if (this.lang) {
-                    this.language = this.lang;
-                } else {
-                    this.language = 'all'
-                }
-            },
+            // lang() {
+            //     if (this.lang) {
+            //         this.language = this.lang;
+            //     } else {
+            //         this.language = 'all'
+            //     }
+            // },
             language() {
                 this.getResultList()
             },
-            result() {
-                if (this.result) {
-                    this.resultStatus = statusDic[this.result]
-                } else {
-                    this.resultStatus = 'all'
-                }
-            },
+            // result() {
+            //     if (this.result) {
+            //         this.resultStatus = statusDic[this.result]
+            //     } else {
+            //         this.resultStatus = 'all'
+            //     }
+            // },
             resultStatus() {
                 this.getResultList()
             },
-            similarPercent() {
-                if (this.similarPercent) {
-                    this.similar = this.similarPercent
-                } else {
-                    this.similar = 'all'
-                }
-            },
+            // similarPercent() {
+            //     if (this.similarPercent) {
+            //         this.similar = this.similarPercent
+            //     } else {
+            //         this.similar = 'all'
+            //     }
+            // },
             similar() {
                 this.getResultList()
             },
-            problemId() {
-                this.problem = this.problemId
-            },
+            // problemId() {
+            //     this.problem = this.problemId
+            // },
             // problem() {
             //     this.getResultList()
             // }
@@ -233,7 +233,7 @@
             getResultList() {
                 const url = this.getUrl();
                 // console.log(`/solution?page=${this.historyPageNumber - 1}&size=${this.historyPageSize}${url}`)
-                this.$router.push(`/history?page=${this.historyPageNumber}${url}`);
+                // this.$router.push(`/history?page=${this.historyPageNumber}${url}`);
                 this.$http.get(`/solution?page=${this.historyPageNumber - 1}&size=${this.historyPageSize}${url}`,)
                     .then(res => {
                         if (res) {
@@ -254,6 +254,16 @@
         },
         created() {
             this.getResultList()
+        },
+        beforeRouteLeave(to, from, next) {
+            // 根据需要添加路径
+            if ((to.name !== 'User') && (to.name !== 'Problem')) {
+                this.$route.meta.keepAlive = false
+                next()
+            } else {
+                this.$route.meta.keepAlive = true
+                next()
+            }
         }
     }
 </script>

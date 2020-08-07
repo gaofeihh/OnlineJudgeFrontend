@@ -64,6 +64,15 @@
         },
         created() {
             this.getContestInfo()
+        },
+        beforeRouteLeave(to, from, next) {
+            if (to.name !== 'Problem') {
+                this.$route.meta.keepAlive = false
+                next()
+            } else {
+                this.$route.meta.keepAlive = true
+                next()
+            }
         }
     }
 </script>

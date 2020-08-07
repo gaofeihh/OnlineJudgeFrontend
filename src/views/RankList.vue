@@ -51,9 +51,9 @@
     import {rankListType} from "@/assets/config/dictionary";
     export default {
         name: "RankList",
-        props: {
-            page: Number
-        },
+        // props: {
+        //     page: Number
+        // },
         data() {
             return {
                 rankData: [],
@@ -92,21 +92,21 @@
             this.getRankList()
         },
         watch: {
-            page() {
-                // if (this.page < 1 || this.page > this.totalPage) {
-                //     this.rankPage =1
-                //     this.getRankList()
-                // } else {
-                this.rankPage = this.page
-
-                // }
-            },
+            // page() {
+            //     // if (this.page < 1 || this.page > this.totalPage) {
+            //     //     this.rankPage =1
+            //     //     this.getRankList()
+            //     // } else {
+            //     this.rankPage = this.page
+            //
+            //     // }
+            // },
             rankPage() {
-                if (this.rankPage < 1 || this.rankPage > this.totalPage) {
-                    this.$router.push("/rankList?page=1")
-                } else {
-                    this.$router.push(`/rankList?page=${this.rankPage}`)
-                }
+                // if (this.rankPage < 1 || this.rankPage > this.totalPage) {
+                //     this.$router.push("/rankList?page=1")
+                // } else {
+                //     this.$router.push(`/rankList?page=${this.rankPage}`)
+                // }
                 this.getRankList()
             },
             rankType() {
@@ -117,6 +117,15 @@
                     this.getRankList()
                 }
 
+            }
+        },
+        beforeRouteLeave(to, from, next) {
+            if (to.name !== 'User') {
+                this.$route.meta.keepAlive = false
+                next()
+            } else {
+                this.$route.meta.keepAlive = true
+                next()
             }
         }
     }

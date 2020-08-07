@@ -44,9 +44,9 @@
     export default {
         name: "Contest",
         components: {ContestItem},
-        props: {
-            page: Number
-        },
+        // props: {
+        //     page: Number
+        // },
         data() {
             return {
                 contestList: [],
@@ -83,22 +83,31 @@
             this.getContestList()
         },
         watch: {
-            page() {
-                // if (this.page < 1 || this.page > this.contestTotalPage) {
-                //     this.contestPage = 1
-                //     this.getContestList()
-                // } else {
-                    this.contestPage = this.page
-
-                // }
-            },
+            // page() {
+            //     // if (this.page < 1 || this.page > this.contestTotalPage) {
+            //     //     this.contestPage = 1
+            //     //     this.getContestList()
+            //     // } else {
+            //         this.contestPage = this.page
+            //
+            //     // }
+            // },
             contestPage() {
-                if (this.contestPage < 1 || this.contestPage > this.contestTotalPage) {
-                        this.$router.push("/contest?page=1")
-                } else {
-                    this.$router.push(`/contest/?page=${this.contestPage}`)
-                }
+                // if (this.contestPage < 1 || this.contestPage > this.contestTotalPage) {
+                //         this.$router.push("/contest?page=1")
+                // } else {
+                //     this.$router.push(`/contest/?page=${this.contestPage}`)
+                // }
                 this.getContestList()
+            }
+        },
+        beforeRouteLeave(to, from, next) {
+            if (to.name !== 'ContestDetail') {
+                this.$route.meta.keepAlive = false
+                next()
+            } else {
+                this.$route.meta.keepAlive = true
+                next()
             }
         }
     }
