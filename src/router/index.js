@@ -20,7 +20,8 @@ const routes = [
         component: () => import('../views/OnlineJudge'),
         props: (route) => ({page: parseInt(route.query.page)}),
         meta: {
-            title: '题库'
+            title: '题库',
+            keepAlive: true
         }
     },
     {
@@ -157,6 +158,11 @@ const routes = [
                     title: '创建比赛'
                 },
             },
+            {
+                path: 'back',
+                name: 'back',
+                component: resolve => require(['@/components/Admin/Back'], resolve),
+            }
         ],
     },
     {

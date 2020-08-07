@@ -9,8 +9,7 @@
                 <input type="checkbox" id="toggle-nav"/>
                 <div class="collapse">
                     <div class="links">
-                        <!-- :class="{active:this.$route.name===isSelect}" -->
-                        <router-link v-for="link in linkLists" :to="link.links" :key="link.id">{{link.show}}
+                        <router-link v-for="link in linkLists" :to="link.links" :key="link.id" exact>{{link.show}}
                         </router-link>
                     </div>
                     <div v-if="!getUsername" class="form">
@@ -26,13 +25,18 @@
             <loading-cartoon/>
         </div>
         <!--路由占位符-->
-        <keep-alive>
-            <v-app>
-                <transition name="slide-fade">
-                    <router-view/>
-                </transition>
-            </v-app>
-        </keep-alive>
+
+        <v-app>
+            <transition name="slide-fade">
+                <keep-alive>
+                    <router-view v-if="$route.meta.keepAlive"/>
+                </keep-alive>
+            </transition>
+            <transition name="slide-fade">
+                <router-view v-if="!$route.meta.keepAlive"/>
+            </transition>
+        </v-app>
+
 
     </div>
 
@@ -67,7 +71,7 @@
 
 <style lang="less">
     button {
-        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
+        font-family: "PingFang SC", "Microsoft YaHei", "微软雅黑",
         Arial, sans-serif;
     }
 
@@ -103,13 +107,16 @@
     .slide-fade-enter-active {
         transition: all .6s ease;
     }
+
     .slide-fade-leave-active {
         transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
-    .slide-fade-enter{
+
+    .slide-fade-enter {
         transform: translateY(15px);
         opacity: 0;
     }
+
     .slide-fade-leave-to {
         transition: all 0s ease;
     }
@@ -173,6 +180,10 @@
                     }
 
                     a:hover {
+                        color: #409eff;
+                    }
+
+                    .router-link-active {
                         color: #409eff;
                     }
                 }

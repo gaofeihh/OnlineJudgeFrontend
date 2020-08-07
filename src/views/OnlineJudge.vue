@@ -61,9 +61,9 @@
 
     export default {
         name: "OnlineJudge",
-        props: {
-            page: Number
-        },
+        // props: {
+        //     page: Number
+        // },
         data() {
             return {
                 pageNumber: 1,
@@ -98,25 +98,25 @@
             }
         },
         created() {
-            this.pageNumber = this.page
+            // this.pageNumber = this.page
             this.getList()
         },
         watch: {
-            page() {
-                // if (this.page < 1 || this.page > this.totalPage) {
-                //     this.pageNumber = 1
-                //     this.getList()
-                // } else {
-                    this.pageNumber = this.page
-
-                // }
-            },
+            // page() {
+            //     // if (this.page < 1 || this.page > this.totalPage) {
+            //     //     this.pageNumber = 1
+            //     //     this.getList()
+            //     // } else {
+            //         this.pageNumber = this.page
+            //
+            //     // }
+            // },
             pageNumber() {
-                if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
-                    this.$router.push("/onlineJudge?page=1")
-                } else {
-                    this.$router.push(`/onlineJudge?page=${this.pageNumber}`)
-                }
+                // if (this.pageNumber < 1 || this.pageNumber > this.totalPage) {
+                //     this.$router.push("/onlineJudge?page=1")
+                // } else {
+                //     this.$router.push(`/onlineJudge?page=${this.pageNumber}`)
+                // }
                 this.getList()
             }
         }

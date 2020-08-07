@@ -193,7 +193,7 @@
         },
         methods: {
             upload() {
-                console.log('update')
+                // console.log('update')
                 // 验证
                 const isSpace = this.$refs.uploadProblemRef.validate()
                 if (!isSpace) {
@@ -220,9 +220,16 @@
                 this.$http.put(`/admin/problem`, newObj).then(res => {
                     if (res) {
                         this.$message.success(`上传成功`)
-                        //初始化界面数据
-                        this.$router.go(0)
                     }
+                }).then(() => { // 等消息提示完再刷新
+                    //初始化界面数据
+                    // 1 this.$router.go(0)
+                    // 2 location.reload()
+                    // 3
+                    this.$router.replace({
+                        path: '/admin/back',
+                        name: 'back'
+                    })
                 })
             },
             addSample() {

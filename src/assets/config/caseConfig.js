@@ -2,7 +2,7 @@
 export const navCase =
     [
         {id: 1, links: '/', show: '首页'},
-        {id: 2, links: '/onlineJudge?page=1', show: '题库'},
+        {id: 2, links: '/onlineJudge', show: '题库'},
         {id: 3, links: '/history?page=1', show: '提交记录'},
         {id: 4, links: '/contest?page=1', show: '竞赛'},
         {id: 5, links: '/rankList?page=1', show: '排名'},
